@@ -1,0 +1,41 @@
+Em anexo, está a prova de questões objetivas e/ou discursivas do "TEP 2019". Quero que extraia todas as questões objetivas e/ou discursivas do arquivo e crie um código que siga os mesmos parâmetros do arquivo "banco_questões.js" que estamos utilizando (Postei em anexo o "Código de Exemplo" para você conseguir seguir os parâmetros ideais).
+
+Nosso objetivo é poder usar o código criado por você para inserir essas novas questões no banco de dados sem que você precise gerar o código completo novamente. Lembre-se que, por se tratarem de questões reais, é preciso adicionar a tag referente à prova (No caso, "TEP 2019").
+
+Lembre-se de duas coisas:
+
+1 - Caso o texto das questões possua algum texto semelhante a "[cite: 4]", você não deve adicionar o mesmo, e sim ignorá-lo.
+
+2 - O código deve ser criado pensando que o desenvolvedor humano precisará apenas copiar e colar ele na funcionalidade que criamos anteriormente, então é preciso levar em consideração que esse código não será utilizado como um banco de dados independente.
+
+------------------------
+
+Em anexo, está a prova de questões objetivas do "TEP 2022". Quero que extraia as mesmas e crie um código que siga os mesmos parâmetros do arquivo "banco_questões.js" que estamos utilizando (Postei em anexo o "Código de Exemplo" para você conseguir seguir os parâmetros ideais).
+
+Nosso objetivo é poder usar o código criado por você para inserir essas novas questões no banco de dados sem que você precise gerar o código completo novamente. Lembre-se que, por se tratarem de questões reais, é preciso adicionar a tag referente à prova (No caso, "TEP 2022").
+
+Lembre-se de duas coisas:
+
+1 - Caso o texto das questões possua algum texto semelhante a "[cite: 4]", você não deve adicionar o mesmo, e sim ignorá-lo.
+
+2 - O código deve ser criado pensando que o desenvolvedor humano precisará apenas copiar e colar ele na funcionalidade que criamos anteriormente, então é preciso levar em consideração que esse código não será utilizado como um banco de dados independente.
+
+------------------------
+
+Para que não seja necessário que o Gemini precise compilar repetidamente o arquivo completo do banco de dados sempre que forem acrescentadas novas questões, precisamos que seja criada a funcionalidade dentro do sistema que permita ao desenvolvedor humano a atualização do banco de dados de forma fácil e simples com base nas características do banco de dados.
+
+Dessa forma, bastaria ao desenvolvedor humano solicitar ao Gemini a extração de questões de provas em .pdf para que fosse gerado o código conforme as diretrizes já desenvolvidas no banco de dados; logo em seguida, o desenvolvedor humano poderia copiar e colar essa fração de código na funcionalidade criada no sistema e inserir essas novas questões no banco de dados.
+
+Talvez seja interessante criar uma subpágina que possa ser acessada através da tela principal para isso.
+
+------------------------
+
+Precisamos fazer duas alterações:
+
+1 - Percebi que foi adicionada em boa parte das questões e do gabarito o texto "[cite: 4]" de forma indevida e desnecessária. Remova ele.
+
+2 - O código deve ser criado pensando que o desenvolvedor humano precisará apenas copiar e colar ele na funcionalidade que criamos anteriormente, então é preciso levar em consideração que esse código não será utilizado como um banco de dados independente.
+
+------------------------
+
+Aqui está o código de exemplo que funcionou perfeitamente antes para que pudéssemos adicionar novas questões sem problemas através da funcionalidade interna que criamos no sistema. Use ele como parâmetro para adequar as questões que você gerou a partir da prova do "TEP 2023".

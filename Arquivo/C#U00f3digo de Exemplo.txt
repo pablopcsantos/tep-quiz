@@ -1,0 +1,64 @@
+[
+    {
+        "temas": [
+            "Aleitamento Materno"
+        ],
+        "tipo": "discursiva",
+        "pergunta": "Lactente de 15 dias de vida é trazido à consulta de puericultura. A mãe queixa-se de dor intensa ao amamentar e relata que seus mamilos estão rachados. Ao exame físico do lactente e da mamada, observa-se que o bebê suga com a boca pouco aberta e bochechas encovadas.\n\nITEM A: Qual é a principal causa para a queixa apresentada pela mãe e a conduta imediata para este problema?\nITEM B: Segundo os critérios técnicos de sucesso no aleitamento, cite pelo menos 3 (três) características de uma pega adequada que devem ser orientadas a esta mãe.",
+        "gabarito": "ITEM A: A principal causa é a pega/técnica inadequada. A conduta é corrigir a técnica de amamentação (pega e posicionamento), manter o aleitamento materno e manter a mama seca (testar diferentes posições).\n\nITEM B: Boca bem aberta; queixo tocando a mama; lábio inferior evertido; parte superior da aréola mais visível que a inferior. (Citar 3)."
+    },
+    {
+        "temas": [
+            "Cetoacidose Diabética (CAD)"
+        ],
+        "tipo": "discursiva",
+        "pergunta": "Escolar de 8 anos, previamente hígido, apresenta quadro de dor abdominal, náuseas, vômitos e respiração rápida e profunda (Kussmaul). Mãe relata que nas últimas 3 semanas a criança vinha apresentando muita sede, aumento do volume urinário e perda de peso. Glicemia capilar na triagem é de 420 mg/dL.\n\nITEM A: Quais exames laboratoriais (gasométricos e de urina/sangue) confirmam o diagnóstico da principal hipótese clínica?\nITEM B: Descreva a conduta terapêutica da primeira hora de atendimento (expansão) e cite a medicação que NÃO deve ser iniciada nesta primeira hora.",
+        "gabarito": "ITEM A: Cetonemia (beta-hidroxibutirato ≥ 3mmol/L) ou cetonúria moderada (≥ 2+); e Gasometria mostrando Acidose (pH venoso < 7,3 ou Bicarbonato < 18 mEq/L).\n\nITEM B: Estabilização hemodinâmica com Soro Fisiológico (10 a 20 mL/kg em 20 a 30 min). NÃO iniciar insulina na primeira hora."
+    },
+    {
+        "temas": [
+            "Pneumologia",
+            "Bronquiolite",
+            "TEP 2025"
+        ],
+        "tipo": "objetiva",
+        "pergunta": "Lactente, cinco meses de vida, feminina, apresenta quadro de bronquiolite viral aguda, com sintomas de tosse, dificuldade respiratória e sibilância. Além da internação, a conduta inicial para o manejo do quadro é:",
+        "opcoes": [
+            "Fornecer de oxigenoterapia e manter a hidratação adequada.",
+            "Administrar de anticorpo monoclonal, nirsevimabe.",
+            "Usar broncodilatadores inalatórios para aliviar a sibilância.",
+            "Prescrever corticosteroides sistêmicos para reduzir a inflamação brônquica."
+        ],
+        "gabarito": "Gabarito oficial: Opção A"
+    },
+    {
+        "temas": [
+            "Ética em Pediatria",
+            "TEP 2025"
+        ],
+        "tipo": "objetiva",
+        "pergunta": "De acordo com o Código de Ética Médica atual, qual é a conduta ao atender um adolescente de 15 anos de idade, com capacidade de discernimento, que solicita confidencialidade sobre o uso de métodos contraceptivos?",
+        "opcoes": [
+            "Informar os pais imediatamente, pois o paciente é menor de idade.",
+            "Recusar o atendimento e pedir a presença dos pais na próxima consulta.",
+            "Atender o adolescente e ligar avisando os pais.",
+            "Atender o adolescente e manter sigilo."
+        ],
+        "gabarito": "Gabarito oficial: Opção D"
+    },
+{
+    "temas": [
+        "Desnutrição e Vitaminas"
+    ],
+    "tipo": "objetiva",
+    "pergunta": "Lactente de 9 meses apresenta irritabilidade, dor intensa à mobilização dos membros inferiores, pseudoparalisia, gengivas edemaciadas e sangrantes e petéquias disseminadas. A radiografia dos joelhos evidencia linha branca de Fränkel.\nO diagnóstico mais provável é:",
+    "opcoes": [
+        "Deficiência de vitamina D.",
+        "Deficiência de vitamina C.",
+        "Deficiência de vitamina E.",
+        "Deficiência de vitamina K."
+    ],
+    "gabarito": "Gabarito oficial: Opção B",
+    "informacoesComplementares": "<strong>Comentário:</strong> O escorbuto decorre da deficiência de vitamina C e caracteriza-se por defeito da síntese de colágeno. As manifestações incluem dor óssea, pseudoparalisia, petéquias, equimoses, gengivite hemorrágica e alterações radiográficas típicas, como linha branca de Fränkel, zona de rarefação de Trümmerfeld e esporão de Pelkan.\n\n<strong>Pérolas de prova:</strong>\n• Escorbuto = deficiência de vitamina C.\n• Pseudoparalisia é manifestação clássica.\n• Gengivite hemorrágica.\n• Linha de Fränkel é achado radiológico típico."
+}
+]

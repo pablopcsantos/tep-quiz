@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<!--
+TEP Quiz
+
+Aplicação web educacional desenvolvida de forma independente por Pablo Phillipe Cândido dos Santos,
+destinada à preparação e ao treinamento para o exame de Título de Especialista em Pediatria (TEP)
+por meio de questões, provas completas e testes personalizados executados diretamente no navegador.
+
+O desenvolvimento contou com a utilização de ferramentas de inteligência artificial generativa como
+recurso auxiliar, mantendo-se sob responsabilidade do autor a concepção, implementação, integração
+e verificação do projeto.
+
+Currículo Lattes: http://lattes.cnpq.br/9500873674712528
+-->
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEP Quiz - Treinamento</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #2ecc71;
+            --partial: #f39c12; 
+            --danger: #e74c3c;
+            --bg: #ecf0f1;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --input-border: #ccc;
+            --tag-bg: #f8f9fa;
+            --tag-border: #e9ecef;
+        }
+
+        /* Variáveis do Modo Escuro */
+        [data-theme="dark"] {
+            --primary: #85c1e9;
+            --secondary: #e74c3c;
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --text: #e0e0e0;
+            --input-border: #444;
+            --tag-bg: #2a2a2a;
+            --tag-border: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Padrões de Fundo */
+        body.pattern-pediatria {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%233498db' fill-opacity='0.06'%3E%3Cpath d='M20 10a5 5 0 0 1 10 0v10h10a5 5 0 0 1 0 10H30v10a5 5 0 0 1-10 0V30H10a5 5 0 0 1 0-10h10V10zm40 40a5 5 0 0 1 10 0v10h10a5 5 0 0 1 0 10H70v10a5 5 0 0 1-10 0V70H50a5 5 0 0 1 0-10h10V50zM15 65a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0zm55-50a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0z'/%3E%3C/g%3E%3C/svg%3E");
+            background-attachment: fixed;
+        }
+        
+        body.pattern-dots {
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='2' fill='%232c3e50' fill-opacity='0.08'/%3E%3C/svg%3E");
+            background-attachment: fixed;
+        }
+
+        body.pattern-capsule {
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2796%27%20height%3D%2796%27%20viewBox%3D%270%200%2096%2096%27%3E%3Cg%20fill%3D%27%233498db%27%20fill-opacity%3D%270.08%27%20transform%3D%27translate%286%208%29%20scale%280.92%29%27%3E%3Cpath%20d%3D%27M53.21%2C10.79a15.54%2C15.54%2C0%2C0%2C0-21.95%2C0L10.79%2C31.26c-14%2C15%2C6.9%2C36%2C22%2C22L53.21%2C32.74A15.54%2C15.54%2C0%2C0%2C0%2C53.21%2C10.79ZM29.91%2C50.38c-11.26%2C10.37-26.65-5-16.29-16.29l8.82-8.82L38.73%2C41.56ZM50.38%2C29.91l-8.82%2C8.82C38%2C35.2%2C28.8%2C26%2C25.27%2C22.44l8.82-8.82C45.23%2C3.16%2C60.77%2C18.81%2C50.38%2C29.91Z%27%2F%3E%3Cpath%20d%3D%27M48.26%2C15.74a8.47%2C8.47%2C0%2C0%2C0-6-2.5c-2.41-.15-8.49%2C2.26-6%2C5.32a2%2C2%2C0%2C0%2C0%2C2.83%2C0%2C4.53%2C4.53%2C0%2C0%2C1%2C7.72%2C3.2%2C2%2C2%2C0%2C0%2C0%2C2%2C2C52.66%2C23.34%2C50.07%2C17.34%2C48.26%2C15.74Z%27%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%27%232c3e50%27%20fill-opacity%3D%270.04%27%20transform%3D%27translate%2853%2050%29%20rotate%28-18%29%20scale%280.56%29%27%3E%3Cpath%20d%3D%27M53.21%2C10.79a15.54%2C15.54%2C0%2C0%2C0-21.95%2C0L10.79%2C31.26c-14%2C15%2C6.9%2C36%2C22%2C22L53.21%2C32.74A15.54%2C15.54%2C0%2C0%2C0%2C53.21%2C10.79ZM29.91%2C50.38c-11.26%2C10.37-26.65-5-16.29-16.29l8.82-8.82L38.73%2C41.56ZM50.38%2C29.91l-8.82%2C8.82C38%2C35.2%2C28.8%2C26%2C25.27%2C22.44l8.82-8.82C45.23%2C3.16%2C60.77%2C18.81%2C50.38%2C29.91Z%27%2F%3E%3Cpath%20d%3D%27M48.26%2C15.74a8.47%2C8.47%2C0%2C0%2C0-6-2.5c-2.41-.15-8.49%2C2.26-6%2C5.32a2%2C2%2C0%2C0%2C0%2C2.83%2C0%2C4.53%2C4.53%2C0%2C0%2C1%2C7.72%2C3.2%2C2%2C2%2C0%2C0%2C0%2C2%2C2C52.66%2C23.34%2C50.07%2C17.34%2C48.26%2C15.74Z%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+            background-attachment: fixed;
+        }
+
+        body.pattern-medkit {
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27108%27%20height%3D%27108%27%20viewBox%3D%270%200%20108%20108%27%3E%3Cg%20fill%3D%27%233498db%27%20fill-opacity%3D%270.07%27%20transform%3D%27translate%2810%2010%29%20scale%281.08%29%27%3E%3Cpath%20d%3D%27m25%2C35h-2c-1.103%2C0-2-.897-2-2v-2h-2c-1.103%2C0-2-.897-2-2v-2c0-1.103.897-2%2C2-2h2v-2c0-1.103.897-2%2C2-2h2c1.103%2C0%2C2%2C.897%2C2%2C2v2h2c1.103%2C0%2C2%2C.897%2C2%2C2v2c0%2C1.103-.897%2C2-2%2C2h-2v2c0%2C1.103-.897%2C2-2%2C2Zm-6-8v2h3c.553%2C0%2C1%2C.448%2C1%2C1v3h2v-3c0-.552.447-1%2C1-1h3v-2h-3c-.553%2C0-1-.448-1-1v-3h-2v3c0%2C.552-.447%2C1-1%2C1h-3Z%27%2F%3E%3Cpath%20d%3D%27m41%2C12h-8v-3c0-2.757-2.243-5-5-5h-8c-2.757%2C0-5%2C2.243-5%2C5v3H7c-2.757%2C0-5%2C2.243-5%2C5v22c0%2C2.757%2C2.243%2C5%2C5%2C5h34c2.757%2C0%2C5-2.243%2C5-5v-22c0-2.757-2.243-5-5-5Zm-24-3c0-1.654%2C1.346-3%2C3-3h8c1.654%2C0%2C3%2C1.346%2C3%2C3v3h-2v-3c0-.552-.447-1-1-1h-8c-.553%2C0-1%2C.448-1%2C1v3h-2v-3Zm10%2C3h-6v-2h6v2Zm17%2C27c0%2C1.654-1.346%2C3-3%2C3H7c-1.654%2C0-3-1.346-3-3v-22c0-1.654%2C1.346-3%2C3-3h34c1.654%2C0%2C3%2C1.346%2C3%2C3v22Z%27%2F%3E%3Cpath%20d%3D%27m24%2C40c-6.617%2C0-12-5.383-12-12s5.383-12%2C12-12%2C12%2C5.383%2C12%2C12-5.383%2C12-12%2C12Zm0-22c-5.514%2C0-10%2C4.486-10%2C10s4.486%2C10%2C10%2C10%2C10-4.486%2C10-10-4.486-10-10-10Z%27%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%27%232c3e50%27%20fill-opacity%3D%270.04%27%20transform%3D%27translate%2860%2062%29%20scale%280.52%29%20rotate%288%2024%2024%29%27%3E%3Cpath%20d%3D%27m25%2C35h-2c-1.103%2C0-2-.897-2-2v-2h-2c-1.103%2C0-2-.897-2-2v-2c0-1.103.897-2%2C2-2h2v-2c0-1.103.897-2%2C2-2h2c1.103%2C0%2C2%2C.897%2C2%2C2v2h2c1.103%2C0%2C2%2C.897%2C2%2C2v2c0%2C1.103-.897%2C2-2%2C2h-2v2c0%2C1.103-.897%2C2-2%2C2Zm-6-8v2h3c.553%2C0%2C1%2C.448%2C1%2C1v3h2v-3c0-.552.447-1%2C1-1h3v-2h-3c-.553%2C0-1-.448-1-1v-3h-2v3c0%2C.552-.447%2C1-1%2C1h-3Z%27%2F%3E%3Cpath%20d%3D%27m41%2C12h-8v-3c0-2.757-2.243-5-5-5h-8c-2.757%2C0-5%2C2.243-5%2C5v3H7c-2.757%2C0-5%2C2.243-5%2C5v22c0%2C2.757%2C2.243%2C5%2C5%2C5h34c2.757%2C0%2C5-2.243%2C5-5v-22c0-2.757-2.243-5-5-5Zm-24-3c0-1.654%2C1.346-3%2C3-3h8c1.654%2C0%2C3%2C1.346%2C3%2C3v3h-2v-3c0-.552-.447-1-1-1h-8c-.553%2C0-1%2C.448-1%2C1v3h-2v-3Zm10%2C3h-6v-2h6v2Zm17%2C27c0%2C1.654-1.346%2C3-3%2C3H7c-1.654%2C0-3-1.346-3-3v-22c0-1.654%2C1.346-3%2C3-3h34c1.654%2C0%2C3%2C1.346%2C3%2C3v22Z%27%2F%3E%3Cpath%20d%3D%27m24%2C40c-6.617%2C0-12-5.383-12-12s5.383-12%2C12-12%2C12%2C5.383%2C12%2C12-5.383%2C12-12%2C12Zm0-22c-5.514%2C0-10%2C4.486-10%2C10s4.486%2C10%2C10%2C10%2C10-4.486%2C10-10-4.486-10-10-10Z%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+            background-attachment: fixed;
+        }
+
+        body[data-theme="dark"].pattern-pediatria {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M20 10a5 5 0 0 1 10 0v10h10a5 5 0 0 1 0 10H30v10a5 5 0 0 1-10 0V30H10a5 5 0 0 1 0-10h10V10zm40 40a5 5 0 0 1 10 0v10h10a5 5 0 0 1 0 10H70v10a5 5 0 0 1-10 0V70H50a5 5 0 0 1 0-10h10V50zM15 65a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0zm55-50a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        body[data-theme="dark"].pattern-dots {
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='2' fill='%23ffffff' fill-opacity='0.05'/%3E%3C/svg%3E");
+        }
+
+        body[data-theme="dark"].pattern-capsule {
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2796%27%20height%3D%2796%27%20viewBox%3D%270%200%2096%2096%27%3E%3Cg%20fill%3D%27%23ffffff%27%20fill-opacity%3D%270.07%27%20transform%3D%27translate%286%208%29%20scale%280.92%29%27%3E%3Cpath%20d%3D%27M53.21%2C10.79a15.54%2C15.54%2C0%2C0%2C0-21.95%2C0L10.79%2C31.26c-14%2C15%2C6.9%2C36%2C22%2C22L53.21%2C32.74A15.54%2C15.54%2C0%2C0%2C0%2C53.21%2C10.79ZM29.91%2C50.38c-11.26%2C10.37-26.65-5-16.29-16.29l8.82-8.82L38.73%2C41.56ZM50.38%2C29.91l-8.82%2C8.82C38%2C35.2%2C28.8%2C26%2C25.27%2C22.44l8.82-8.82C45.23%2C3.16%2C60.77%2C18.81%2C50.38%2C29.91Z%27%2F%3E%3Cpath%20d%3D%27M48.26%2C15.74a8.47%2C8.47%2C0%2C0%2C0-6-2.5c-2.41-.15-8.49%2C2.26-6%2C5.32a2%2C2%2C0%2C0%2C0%2C2.83%2C0%2C4.53%2C4.53%2C0%2C0%2C1%2C7.72%2C3.2%2C2%2C2%2C0%2C0%2C0%2C2%2C2C52.66%2C23.34%2C50.07%2C17.34%2C48.26%2C15.74Z%27%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%27%2385c1e9%27%20fill-opacity%3D%270.04%27%20transform%3D%27translate%2853%2050%29%20rotate%28-18%29%20scale%280.56%29%27%3E%3Cpath%20d%3D%27M53.21%2C10.79a15.54%2C15.54%2C0%2C0%2C0-21.95%2C0L10.79%2C31.26c-14%2C15%2C6.9%2C36%2C22%2C22L53.21%2C32.74A15.54%2C15.54%2C0%2C0%2C0%2C53.21%2C10.79ZM29.91%2C50.38c-11.26%2C10.37-26.65-5-16.29-16.29l8.82-8.82L38.73%2C41.56ZM50.38%2C29.91l-8.82%2C8.82C38%2C35.2%2C28.8%2C26%2C25.27%2C22.44l8.82-8.82C45.23%2C3.16%2C60.77%2C18.81%2C50.38%2C29.91Z%27%2F%3E%3Cpath%20d%3D%27M48.26%2C15.74a8.47%2C8.47%2C0%2C0%2C0-6-2.5c-2.41-.15-8.49%2C2.26-6%2C5.32a2%2C2%2C0%2C0%2C0%2C2.83%2C0%2C4.53%2C4.53%2C0%2C0%2C1%2C7.72%2C3.2%2C2%2C2%2C0%2C0%2C0%2C2%2C2C52.66%2C23.34%2C50.07%2C17.34%2C48.26%2C15.74Z%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+        }
+
+        body[data-theme="dark"].pattern-medkit {
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27108%27%20height%3D%27108%27%20viewBox%3D%270%200%20108%20108%27%3E%3Cg%20fill%3D%27%23ffffff%27%20fill-opacity%3D%270.06%27%20transform%3D%27translate%2810%2010%29%20scale%281.08%29%27%3E%3Cpath%20d%3D%27m25%2C35h-2c-1.103%2C0-2-.897-2-2v-2h-2c-1.103%2C0-2-.897-2-2v-2c0-1.103.897-2%2C2-2h2v-2c0-1.103.897-2%2C2-2h2c1.103%2C0%2C2%2C.897%2C2%2C2v2h2c1.103%2C0%2C2%2C.897%2C2%2C2v2c0%2C1.103-.897%2C2-2%2C2h-2v2c0%2C1.103-.897%2C2-2%2C2Zm-6-8v2h3c.553%2C0%2C1%2C.448%2C1%2C1v3h2v-3c0-.552.447-1%2C1-1h3v-2h-3c-.553%2C0-1-.448-1-1v-3h-2v3c0%2C.552-.447%2C1-1%2C1h-3Z%27%2F%3E%3Cpath%20d%3D%27m41%2C12h-8v-3c0-2.757-2.243-5-5-5h-8c-2.757%2C0-5%2C2.243-5%2C5v3H7c-2.757%2C0-5%2C2.243-5%2C5v22c0%2C2.757%2C2.243%2C5%2C5%2C5h34c2.757%2C0%2C5-2.243%2C5-5v-22c0-2.757-2.243-5-5-5Zm-24-3c0-1.654%2C1.346-3%2C3-3h8c1.654%2C0%2C3%2C1.346%2C3%2C3v3h-2v-3c0-.552-.447-1-1-1h-8c-.553%2C0-1%2C.448-1%2C1v3h-2v-3Zm10%2C3h-6v-2h6v2Zm17%2C27c0%2C1.654-1.346%2C3-3%2C3H7c-1.654%2C0-3-1.346-3-3v-22c0-1.654%2C1.346-3%2C3-3h34c1.654%2C0%2C3%2C1.346%2C3%2C3v22Z%27%2F%3E%3Cpath%20d%3D%27m24%2C40c-6.617%2C0-12-5.383-12-12s5.383-12%2C12-12%2C12%2C5.383%2C12%2C12-5.383%2C12-12%2C12Zm0-22c-5.514%2C0-10%2C4.486-10%2C10s4.486%2C10%2C10%2C10%2C10-4.486%2C10-10-4.486-10-10-10Z%27%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%27%2385c1e9%27%20fill-opacity%3D%270.04%27%20transform%3D%27translate%2860%2062%29%20scale%280.52%29%20rotate%288%2024%2024%29%27%3E%3Cpath%20d%3D%27m25%2C35h-2c-1.103%2C0-2-.897-2-2v-2h-2c-1.103%2C0-2-.897-2-2v-2c0-1.103.897-2%2C2-2h2v-2c0-1.103.897-2%2C2-2h2c1.103%2C0%2C2%2C.897%2C2%2C2v2h2c1.103%2C0%2C2%2C.897%2C2%2C2v2c0%2C1.103-.897%2C2-2%2C2h-2v2c0%2C1.103-.897%2C2-2%2C2Zm-6-8v2h3c.553%2C0%2C1%2C.448%2C1%2C1v3h2v-3c0-.552.447-1%2C1-1h3v-2h-3c-.553%2C0-1-.448-1-1v-3h-2v3c0%2C.552-.447%2C1-1%2C1h-3Z%27%2F%3E%3Cpath%20d%3D%27m41%2C12h-8v-3c0-2.757-2.243-5-5-5h-8c-2.757%2C0-5%2C2.243-5%2C5v3H7c-2.757%2C0-5%2C2.243-5%2C5v22c0%2C2.757%2C2.243%2C5%2C5%2C5h34c2.757%2C0%2C5-2.243%2C5-5v-22c0-2.757-2.243-5-5-5Zm-24-3c0-1.654%2C1.346-3%2C3-3h8c1.654%2C0%2C3%2C1.346%2C3%2C3v3h-2v-3c0-.552-.447-1-1-1h-8c-.553%2C0-1%2C.448-1%2C1v3h-2v-3Zm10%2C3h-6v-2h6v2Zm17%2C27c0%2C1.654-1.346%2C3-3%2C3H7c-1.654%2C0-3-1.346-3-3v-22c0-1.654%2C1.346-3%2C3-3h34c1.654%2C0%2C3%2C1.346%2C3%2C3v22Z%27%2F%3E%3Cpath%20d%3D%27m24%2C40c-6.617%2C0-12-5.383-12-12s5.383-12%2C12-12%2C12%2C5.383%2C12%2C12-5.383%2C12-12%2C12Zm0-22c-5.514%2C0-10%2C4.486-10%2C10s4.486%2C10%2C10%2C10%2C10-4.486%2C10-10-4.486-10-10-10Z%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Telas */
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.4s; }
+
+        /* Componentes Comuns */
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        button {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        button:hover { opacity: 0.8; transform: translateY(-1px); }
+        button:active { transform: translateY(1px); }
+        
+        .btn-primary { background: var(--secondary); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-partial { background: var(--partial); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-warning { background: #e67e22; color: white; }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+
+        button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+        input[type="number"], select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--input-border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        /* Tela Inicial */
+        .home-controls { text-align: center; margin-top: 50px; }
+        .hero-title { font-size: 2.5rem; color: var(--primary); margin-bottom: 10px; }
+        [data-theme="dark"] .hero-title { color: var(--text); }
+
+        /* Tela de Setup do Teste */
+        .setup-section { margin-bottom: 30px; }
+        .setup-section h3 { border-bottom: 2px solid var(--input-border); padding-bottom: 10px; margin-bottom: 20px; color: var(--primary); }
+        [data-theme="dark"] .setup-section h3 { color: var(--text); }
+        
+        .tags-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .tag-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: var(--tag-bg);
+            border: 1px solid var(--tag-border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .tag-item:hover { border-color: var(--secondary); }
+        .tag-item input[type="checkbox"] { margin-right: 12px; transform: scale(1.2); cursor: pointer; }
+        
+        .type-selector {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .type-option {
+            background: var(--tag-bg);
+            border: 1px solid var(--tag-border);
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .type-option:hover { border-color: var(--secondary); }
+        
+        .qty-controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            background: rgba(0,0,0,0.02);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        [data-theme="dark"] .qty-controls { background: rgba(255,255,255,0.02); }
+        .qty-box { display: flex; flex-direction: column; gap: 5px; }
+        .timer-config { display: flex; flex-direction: column; gap: 15px; }
+        .timer-input { display: none; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+        /* Layout do Quiz */
+        .quiz-layout { display: grid; grid-template-columns: 80px 1fr; gap: 20px; align-items: start; }
+        .sidebar { display: flex; flex-direction: column; gap: 10px; align-items: center; background: var(--card-bg); padding: 20px 10px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .q-dot { width: 40px; height: 40px; border-radius: 50%; background: #bdc3c7; color: #333; display: flex; justify-content: center; align-items: center; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        [data-theme="dark"] .q-dot { background: #555; color: #eee; }
+        .q-dot.active { border: 3px solid var(--primary); transform: scale(1.1); }
+        .q-dot.correct { background: var(--success); color: white; }
+        .q-dot.partial { background: var(--partial); color: white; }
+        .q-dot.wrong { background: var(--danger); color: white; }
+
+        /* Área da Questão */
+        .question-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+        .type-badge { background-color: var(--primary); color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; display: inline-block; }
+        .theme-toggle-btn { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.95rem; font-weight: bold; color: var(--primary); user-select: none; transition: 0.2s; }
+        .theme-toggle-btn:hover { opacity: 0.7; }
+        [data-theme="dark"] .theme-toggle-btn { color: var(--text); }
+        .theme-badge { background-color: var(--secondary); color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; display: inline-block; margin: 2px; }
+        .timer-display { display: none; background: var(--danger); color: white; padding: 8px 14px; border-radius: 20px; font-size: 1rem; font-weight: bold; letter-spacing: 0.5px; }
+        .timer-display.warning { background: var(--partial); }
+        .q-dot:disabled { cursor: not-allowed; opacity: 0.45; }
+        .question-text { font-size: 1.1rem; line-height: 1.6; white-space: pre-wrap; margin-bottom: 20px; font-weight: bold; }
+        textarea { width: 100%; min-height: 150px; padding: 15px; border: 1px solid var(--input-border); border-radius: 5px; font-size: 1rem; box-sizing: border-box; resize: vertical; margin-bottom: 20px; font-weight: normal; background: var(--bg); color: var(--text); transition: 0.3s; }
+        .objetiva-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .obj-option-label { display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg); border: 1px solid var(--input-border); border-radius: 5px; cursor: pointer; }
+        .obj-option-label input:disabled { cursor: not-allowed; }
+        .obj-option-label:has(input:disabled) { opacity: 0.8; cursor: not-allowed; }
+        .gabarito-area { display: none; background: rgba(46, 204, 113, 0.1); border-left: 5px solid var(--success); padding: 20px; margin: 20px 0; white-space: pre-wrap; line-height: 1.6; }
+        .info-complementar-area { display: none; background: rgba(52, 152, 219, 0.08); border-left: 5px solid var(--secondary); padding: 20px; margin: 0 0 20px 0; white-space: pre-wrap; line-height: 1.6; }
+        .info-complementar-area strong { color: var(--secondary); }
+        .grade-controls { display: none; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .nav-controls { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--input-border); padding-top: 20px; gap: 10px; flex-wrap: wrap; }
+
+        /* Tela de Resultados */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        .stat-box { background: var(--card-bg); padding: 20px; text-align: center; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .stat-box h3 { margin: 0; color: #7f8c8d; font-size: 0.9rem; }
+        [data-theme="dark"] .stat-box h3 { color: #aaaaaa; }
+        .stat-box .val { font-size: 2rem; font-weight: bold; color: var(--primary); margin-top: 10px; }
+        .history-list { list-style: none; padding: 0; max-height: 250px; overflow-y: auto; }
+        .history-item { background: var(--card-bg); padding: 15px; border-radius: 5px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 15px; border-left: 4px solid var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .history-item input[type="checkbox"] { width: 18px; height: 18px; flex: 0 0 auto; }
+
+        /* Adicionar Questões */
+        .code-textarea { font-family: monospace; font-size: 0.9rem; background: #282c34; color: #abb2bf; }
+        [data-theme="dark"] .code-textarea { background: #181a1f; }
+        
+        .instructions-panel {
+            background: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+        }
+        
+        .instructions-panel summary {
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--secondary);
+            list-style: none;
+            outline: none;
+        }
+        
+        .instructions-panel summary::-webkit-details-marker { display: none; }
+        
+        .instructions-panel summary:before {
+            content: "▶";
+            display: inline-block;
+            margin-right: 8px;
+            transition: 0.2s;
+            font-size: 0.8rem;
+        }
+        
+        .instructions-panel[open] summary:before { transform: rotate(90deg); }
+
+        /* Alterações para manter a indentação */
+        .example-code {
+            background: #282c34;
+            color: #98c379;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: monospace;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            white-space: pre; 
+            line-height: 1.4;
+        }
+        
+        .example-code .keyword { color: #c678dd; }
+        .example-code .string { color: #98c379; }
+        .example-code .punctuation { color: #abb2bf; }
+
+
+        /* Sobre o projeto */
+        .about-project-home {
+            display: flex;
+            justify-content: center;
+            margin-top: 52px;
+            padding-top: 18px;
+            border-top: 1px solid var(--tag-border);
+        }
+
+        .about-project-button {
+            appearance: none;
+            border: 0;
+            background: transparent;
+            color: var(--text);
+            opacity: 0.62;
+            font-size: 0.88rem;
+            font-weight: 500;
+            padding: 7px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+
+        .about-project-button:hover {
+            opacity: 0.95;
+            background: var(--tag-bg);
+        }
+
+        .about-project-card {
+            max-width: 820px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .about-project-card h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        .about-project-card a {
+            color: var(--secondary);
+            overflow-wrap: anywhere;
+        }
+
+        .about-project-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid var(--tag-border);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- TELA INICIAL -->
+        <div id="screen-home" class="screen active card home-controls">
+            <h1 class="hero-title">TEP Quiz</h1>
+            <p>Treinamento por Questões para o TEP</p>
+            <p style="margin-top: 30px;">Total de questões no banco de dados: <strong id="db-count" style="font-size: 1.2rem; color: var(--secondary);">0</strong></p>
+            
+            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 40px;">
+                <button class="btn-primary" onclick="initSetup()">▶️ Criar Novo Teste</button>
+                <button class="btn-outline" onclick="showScreen('screen-results')">📊 Ver Resultados</button>
+                <button class="btn-outline" onclick="showScreen('screen-settings')">⚙️ Aparência</button>
+                <button class="btn-success" onclick="showScreen('screen-add-questions')">➕ Adicionar Questões</button>
+            </div>
+
+            <div class="about-project-home">
+                <button class="about-project-button" onclick="showScreen('screen-about')">Sobre o projeto</button>
+            </div>
+        </div>
+
+        <!-- TELA SOBRE O PROJETO -->
+        <div id="screen-about" class="screen">
+            <h2>Sobre o projeto</h2>
+            <div class="card about-project-card">
+                <h3>👤 Autoria e desenvolvimento</h3>
+                <p>Aplicação web educacional desenvolvida de forma independente por <strong>Pablo Phillipe Cândido dos Santos</strong>, destinada à preparação e ao treinamento para o exame de Título de Especialista em Pediatria (TEP), com questões, provas completas e testes personalizados executados diretamente no navegador.</p>
+                <p>O desenvolvimento contou com a utilização de ferramentas de inteligência artificial generativa como recurso auxiliar no processo de desenvolvimento, mantendo-se sob responsabilidade do autor a concepção, implementação, integração e verificação do projeto.</p>
+                <p><strong>Currículo Lattes:</strong> <a href="http://lattes.cnpq.br/9500873674712528" target="_blank" rel="noopener noreferrer">http://lattes.cnpq.br/9500873674712528</a></p>
+                <div class="about-project-actions">
+                    <button class="btn-outline" onclick="showScreen('screen-home')">Voltar ao início</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TELA DE ADICIONAR QUESTÕES -->
+        <div id="screen-add-questions" class="screen">
+            <h2>Atualizar Banco de Questões</h2>
+            
+            <div class="card">
+                
+                <details class="instructions-panel" open>
+                    <summary>Instruções e Padrão Esperado</summary>
+                    <div style="margin-top: 15px; line-height: 1.5;">
+                        <p>O código colado deve ser um <strong>Array</strong> (uma lista dentro de colchetes <code>[ ]</code>) contendo uma ou mais questões em formato JSON/JavaScript.</p>
+                        <p>Para associar uma questão a uma <strong>Prova completa</strong>, inclua no campo <code>temas</code> uma tag no padrão <strong>TEP 20XX</strong> (por exemplo, <code>TEP 2025</code>). Essas tags são reconhecidas automaticamente e aparecem separadas dos temas médicos na configuração do teste.</p>
+                        <p>Lembre-se: nas questões objetivas, o gabarito deve sempre seguir o formato <strong>"Opção X"</strong> e o array de opções <strong>NÃO</strong> deve conter as letras (a, b, c) escritas no texto.</p>
+                        <p>Opcionalmente, questões objetivas podem incluir o campo <strong>"informacoesComplementares"</strong>: um único bloco de texto extra (comentário, pérolas de prova, etc.) que só aparece depois que o aluno corrige a questão. Se houver mais de um "tipo" de informação (ex: Comentário e Pérolas de Prova), coloque tudo nesse mesmo campo, diferenciando cada parte com formatação simples em HTML, como <code>&lt;strong&gt;</code> (negrito) ou <code>&lt;u&gt;</code> (sublinhado), e use <code>\n</code> para quebras de linha.</p>
+                        
+                        <strong>Exemplo de Código Aceito:</strong>
+                        <pre class="example-code">
+<span class="punctuation">[</span>
+  <span class="punctuation">{</span>
+    <span class="string">"pergunta"</span><span class="punctuation">:</span> <span class="string">"Sobre a asma na criança, qual a conduta para exacerbação leve?"</span><span class="punctuation">,</span>
+    <span class="string">"gabarito"</span><span class="punctuation">:</span> <span class="string">"Uso de beta-2 agonista de curta duração (ex: Salbutamol)."</span><span class="punctuation">,</span>
+    <span class="string">"tipo"</span><span class="punctuation">:</span> <span class="string">"discursiva"</span><span class="punctuation">,</span>
+    <span class="string">"temas"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"Pneumologia"</span><span class="punctuation">,</span> <span class="string">"Emergência"</span><span class="punctuation">]</span>
+  <span class="punctuation">}</span><span class="punctuation">,</span>
+  <span class="punctuation">{</span>
+    <span class="string">"pergunta"</span><span class="punctuation">:</span> <span class="string">"Qual o agente etiológico mais comum da bronquiolite viral aguda?"</span><span class="punctuation">,</span>
+    <span class="string">"opcoes"</span><span class="punctuation">:</span> <span class="punctuation">[</span>
+      <span class="string">"Rinovirus"</span><span class="punctuation">,</span>
+      <span class="string">"Vírus Sincicial Respiratório (VSR)"</span><span class="punctuation">,</span>
+      <span class="string">"Adenovirus"</span><span class="punctuation">,</span>
+      <span class="string">"Metapneumovirus"</span>
+    <span class="punctuation">]</span><span class="punctuation">,</span>
+    <span class="string">"gabarito"</span><span class="punctuation">:</span> <span class="string">"Opção B"</span><span class="punctuation">,</span>
+    <span class="string">"informacoesComplementares"</span><span class="punctuation">:</span> <span class="string">"&lt;strong&gt;Comentário:&lt;/strong&gt; O VSR é o principal agente etiológico da bronquiolite.\n\n&lt;strong&gt;Pérolas de prova:&lt;/strong&gt;\n• Pico de incidência entre 2-6 meses de idade."</span><span class="punctuation">,</span>
+    <span class="string">"tipo"</span><span class="punctuation">:</span> <span class="string">"objetiva"</span><span class="punctuation">,</span>
+    <span class="string">"temas"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"Infectologia"</span><span class="punctuation">,</span> <span class="string">"Pneumologia"</span><span class="punctuation">]</span>
+  <span class="punctuation">}</span>
+<span class="punctuation">]</span></pre>
+                    </div>
+                </details>
+
+                <p style="font-weight: bold; margin-top: 25px;">Cole abaixo o código das novas questões:</p>
+                <p style="margin-top: 8px; color: var(--text); line-height: 1.5;">O sistema agora valida automaticamente a estrutura das questões antes da mesclagem. Se houver erros obrigatórios, a atualização é bloqueada; se houver apenas avisos, você poderá revisar as observações e seguir com a geração do novo <code>banco_questoes.js</code>.</p>
+                
+                <textarea id="new-questions-input" class="code-textarea" placeholder="[\n  {\n    'pergunta': 'Texto da pergunta...',\n    'gabarito': '...', \n    'tipo': 'objetiva',\n    ...\n  }\n]"></textarea>
+                
+                <div style="display: flex; gap: 15px; margin-top: 15px;">
+                    <button class="btn-primary" onclick="processNewQuestions()">Verificar e Mesclar</button>
+                    <button class="btn-outline" onclick="showScreen('screen-home')">Cancelar</button>
+                </div>
+
+                <div id="add-q-result" style="display: none; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--input-border);">
+                    <p id="add-q-msg" style="font-weight: bold; margin-bottom: 15px;"></p>
+                    <button id="btn-download-db" class="btn-success" onclick="downloadUpdatedDB()" style="display: none; width: 100%;">📥 Salvar arquivo banco_questoes.js Atualizado</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TELA DE SETUP DO TESTE -->
+        <div id="screen-setup" class="screen">
+            <h2>Configurar Novo Teste</h2>
+            
+            <div class="card">
+                <div class="setup-section">
+                    <h3>1. Provas completas</h3>
+                    <p style="margin-top: -8px; margin-bottom: 15px; color: #7f8c8d; line-height: 1.5;">
+                        Selecione uma ou mais provas para incluir <strong>todas as questões</strong> associadas aos anos escolhidos.
+                        Ao selecionar uma prova completa, os filtros de temas são desmarcados e o tipo de questão muda automaticamente para <strong>Prova completa</strong>.
+                    </p>
+                    <div style="margin-bottom: 15px;">
+                        <button class="btn-outline" style="padding: 5px 10px; font-size: 0.9rem;" onclick="toggleAllFullExams(false)">Desmarcar provas</button>
+                    </div>
+                    <div class="tags-grid" id="full-exams-container"></div>
+                </div>
+
+                <div class="setup-section">
+                    <h3>2. Filtro de Temas (Tags)</h3>
+                    <div style="margin-bottom: 15px;">
+                        <button class="btn-outline" style="padding: 5px 10px; font-size: 0.9rem;" onclick="toggleAllTags(true)">Marcar Todos</button>
+                        <button class="btn-outline" style="padding: 5px 10px; font-size: 0.9rem;" onclick="toggleAllTags(false)">Desmarcar Todos</button>
+                    </div>
+                    <div class="tags-grid" id="tags-container"></div>
+                </div>
+
+                <div class="setup-section">
+                    <h3>3. Tipo de Questão</h3>
+                    <div class="type-selector">
+                        <label class="type-option"><input type="radio" name="test-type" value="discursiva" checked onchange="handleTestTypeChange()"> Apenas Discursivas</label>
+                        <label class="type-option"><input type="radio" name="test-type" value="objetiva" onchange="handleTestTypeChange()"> Apenas Objetivas</label>
+                        <label class="type-option"><input type="radio" name="test-type" value="ambas" onchange="handleTestTypeChange()"> Misturar Ambas</label>
+                        <label class="type-option"><input type="radio" name="test-type" value="prova-completa" onchange="handleTestTypeChange()"> Prova completa</label>
+                    </div>
+                    
+                    <div class="qty-controls" id="qty-controls">
+                        <div class="qty-box" id="box-qty-disc">
+                            <label for="num-disc" style="font-weight: bold;">Qtd. Discursivas:</label>
+                            <input type="number" id="num-disc" value="5" min="0" max="100" style="width: 100px;">
+                        </div>
+                        <div class="qty-box" id="box-qty-obj" style="display: none;">
+                            <label for="num-obj" style="font-weight: bold;">Qtd. Objetivas:</label>
+                            <input type="number" id="num-obj" value="5" min="0" max="100" style="width: 100px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-section">
+                    <h3>4. Contador Regressivo</h3>
+                    <div class="timer-config">
+                        <label class="type-option"><input type="radio" name="timer-mode" value="none" checked onchange="updateTimerConfig()"> Sem contador</label>
+                        <label class="type-option"><input type="radio" name="timer-mode" value="per-question" onchange="updateTimerConfig()"> Tempo por questão (ordem sequencial)</label>
+                        <div id="per-question-timer-input" class="timer-input">
+                            <label for="minutes-per-question" style="font-weight: bold;">Minutos por questão:</label>
+                            <input type="number" id="minutes-per-question" value="2" min="1" max="180" style="width: 100px;">
+                            <small>Não será possível voltar ou avançar sem responder à questão atual.</small>
+                        </div>
+                        <label class="type-option"><input type="radio" name="timer-mode" value="total-test" onchange="updateTimerConfig()"> Tempo total de prova (navegação livre)</label>
+                        <div id="total-test-timer-input" class="timer-input">
+                            <label for="total-test-minutes" style="font-weight: bold;">Duração total (minutos):</label>
+                            <input type="number" id="total-test-minutes" value="60" min="1" max="1440" style="width: 100px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-top: 30px; border-top: 1px solid var(--input-border); padding-top: 20px;">
+                    <button class="btn-outline" onclick="showScreen('screen-home')">Cancelar</button>
+                    <button class="btn-primary" style="font-size: 1.1rem; padding: 12px 30px;" onclick="startTest()">Gerar Teste</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TELA DE CONFIGURAÇÕES DE APARÊNCIA -->
+        <div id="screen-settings" class="screen">
+            <h2>Configurações de Aparência</h2>
+            <div class="card">
+                <div class="settings-panel">
+                    <div class="setting-item">
+                        <label for="theme-select" style="font-weight: bold;">🎨 Tema do Sistema</label>
+                        <select id="theme-select" onchange="applyAppearanceSettings()">
+                            <option value="light">☀️ Modo Claro</option>
+                            <option value="dark">🌙 Modo Escuro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item" style="margin-top: 20px;">
+                        <label for="pattern-select" style="font-weight: bold;">🖼️ Padrão de Fundo</label>
+                        <select id="pattern-select" onchange="applyAppearanceSettings()">
+                            <option value="none">Liso (Sem padrão)</option>
+                            <option value="pediatria">🩺 Pediatria (Cruzes médicas)</option>
+                            <option value="capsule">💊 Cápsulas médicas</option>
+                            <option value="medkit">🩹 Maleta médica</option>
+                            <option value="dots">⚪ Bolinhas minimalistas</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 40px; border-top: 1px solid var(--input-border); padding-top: 20px;">
+                    <button class="btn-primary" onclick="showScreen('screen-home')">Salvar e Voltar ao Início</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TELA DO QUIZ -->
+        <div id="screen-quiz" class="screen">
+            <div class="quiz-layout">
+                <div class="sidebar" id="sidebar-dots"></div>
+
+                <div class="card" style="margin-top: 0;">
+                    <div class="question-header">
+                        <div id="question-type-badge" class="type-badge">Discursiva</div>
+                        <div id="timer-display" class="timer-display" aria-live="polite"></div>
+                        <div class="theme-toggle-btn" id="theme-btn" onclick="toggleTheme()">
+                            <span id="theme-icon"></span> Tag(s) da Questão
+                        </div>
+                    </div>
+                    
+                    <div id="theme-container" style="display: none; gap: 10px; justify-content: flex-end; margin-bottom: 20px; flex-wrap: wrap;"></div>
+                    
+                    <div class="question-text" id="q-text"></div>
+                    
+                    <div id="answer-area">
+                        <textarea id="user-answer" placeholder="Rascunhe sua resposta aqui..."></textarea>
+                        <div id="objetiva-container" class="objetiva-options" style="display:none;"></div>
+                    </div>
+                    
+                    <button id="btn-corrigir" class="btn-primary" style="width: 100%;" onclick="showGabarito()">Ver Gabarito e Corrigir</button>
+                    
+                    <div id="gabarito-area" class="gabarito-area"></div>
+                    
+                    <div id="info-complementar-area" class="info-complementar-area"></div>
+                    
+                    <div id="grade-controls" class="grade-controls">
+                        <p style="width: 100%; text-align: center; font-weight: bold; margin-bottom: 5px;">Como você se saiu?</p>
+                        <button class="btn-success" onclick="gradeAnswer('correct')">Acertei</button>
+                        <button class="btn-partial" onclick="gradeAnswer('partial')">Acertei parcialmente</button>
+                        <button class="btn-danger" onclick="gradeAnswer('wrong')">Errei</button>
+                    </div>
+
+                    <div class="nav-controls">
+                        <button class="btn-outline" id="btn-prev-question" onclick="prevQuestion()">← Anterior</button>
+                        <button class="btn-warning" id="btn-cancel-test" onclick="cancelTest()">Cancelar teste</button>
+                        <button class="btn-danger" onclick="finishTest()">Finalizar Teste</button>
+                        <button class="btn-outline" id="btn-next-question" onclick="nextQuestion()">Próxima →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TELA DE RESULTADOS -->
+        <div id="screen-results" class="screen">
+            <h2>Resultados e Estatísticas</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h3>Questões Respondidas</h3>
+                    <div class="val" id="global-total">0</div>
+                </div>
+                <div class="stat-box">
+                    <h3>Taxa Global de Acertos</h3>
+                    <div class="val" id="global-acc" style="color: var(--success);">0%</div>
+                </div>
+                <div class="stat-box">
+                    <h3>Taxa Global de Erros</h3>
+                    <div class="val" id="global-err" style="color: var(--danger);">0%</div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="btn-primary" onclick="exportarHistorico()">📥 Salvar Histórico (Pen Drive)</button>
+                <button class="btn-outline" onclick="document.getElementById('import-file').click()">📤 Carregar Histórico do Pen Drive</button>
+                <button class="btn-danger" onclick="deleteSelectedHistoryTests()">Excluir testes selecionados</button>
+                <button class="btn-success" onclick="saveHistoryChanges()">Gravar alterações</button>
+                <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importarHistorico(event)">
+            </div>
+
+            <h3>Histórico de Testes</h3>
+            <ul class="history-list" id="history-list"></ul>
+
+            <button class="btn-primary" style="margin-top: 20px;" onclick="showScreen('screen-home')">Voltar ao Início</button>
+        </div>
+
+    </div>
+
+    <!-- Import do Banco de Questões original -->
+    <script src="banco_questoes.js"></script>
+
+    <script>
+        let currentTest = [];
+        let currentIndex = 0;
+        let tagsVisible = false;
+        let timerMode = 'none';
+        let timerSecondsRemaining = 0;
+        let timerInterval = null;
+        let minutesPerQuestion = 0;
+        let lastStandardTestType = 'discursiva';
+        let historyData = JSON.parse(localStorage.getItem('tep_quiz_history')) || [];
+        let questaoUltimaVezVista = JSON.parse(localStorage.getItem('tep_question_timestamps')) || {};
+        
+
+        function startTotalTimer() {
+            clearInterval(timerInterval);
+            updateTimerDisplay(timerSecondsRemaining);
+            document.getElementById('timer-display').style.display = 'block';
+
+            timerInterval = setInterval(() => {
+                timerSecondsRemaining--;
+                updateTimerDisplay(timerSecondsRemaining);
+                
+                if (timerSecondsRemaining <= 0) {
+                    handleTimeUp();
+                }
+            }, 1000);
+        }
+
+        function startQuestionTimer() {
+            clearInterval(timerInterval);
+            timerSecondsRemaining = minutesPerQuestion * 60;
+            updateTimerDisplay(timerSecondsRemaining);
+            document.getElementById('timer-display').style.display = 'block';
+
+            timerInterval = setInterval(() => {
+                timerSecondsRemaining--;
+                updateTimerDisplay(timerSecondsRemaining);
+                
+                if (timerSecondsRemaining <= 0) {
+                    handleTimeUp();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay(seconds) {
+            const display = document.getElementById('timer-display');
+            if (seconds <= 0) {
+                display.textContent = `⏰ 00:00`;
+                display.classList.add('warning');
+                return;
+            }
+            
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            display.textContent = `⏱️ ${m}:${s}`;
+            
+            if (seconds <= 60) {
+                display.classList.add('warning');
+            } else {
+                display.classList.remove('warning');
+            }
+        }
+
+        function handleTimeUp() {
+            clearInterval(timerInterval);
+            
+            if (timerMode === 'total-test') {
+                alert("⏰ Tempo total esgotado! Seu teste será finalizado automaticamente.");
+                finishTest(true);
+            } else if (timerMode === 'per-question') {
+                alert("⏰ Tempo esgotado para esta questão!");
+                const q = currentTest[currentIndex];
+                
+                if (!q.status) {
+                    if (q.isObjetiva) {
+                        q.status = 'wrong';
+                    }
+                    showGabarito();
+                }
+            }
+        }
+
+        let mergedDatabaseForExport = [];
+
+        const iconEyeOpen = `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+        const iconEyeClosed = `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+
+        // Helper para garantir a sincronização do banco global sem erro de reatribuição constante
+        function getGlobalBanco() {
+            return (typeof bancoDeQuestoes !== 'undefined') ? bancoDeQuestoes : [];
+        }
+
+        function updateGlobalBanco(newArray) {
+            if (typeof bancoDeQuestoes !== 'undefined') {
+                bancoDeQuestoes.length = 0;
+                bancoDeQuestoes.push(...newArray);
+            } else {
+                window.bancoDeQuestoes = [...newArray];
+            }
+        }
+
+        // Inicialização
+        function updateDBCounter() {
+            document.getElementById('db-count').textContent = getGlobalBanco().length;
+        }
+        updateDBCounter();
+        loadAppearanceSettings();
+        renderResults();
+
+        // ---- ADICIONAR NOVAS QUESTÕES ----
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function normalizeWhitespace(str) {
+            return String(str || '').replace(/\s+/g, ' ').trim();
+        }
+
+        function getQuestionSignature(question) {
+            return normalizeWhitespace(question && question.pergunta ? question.pergunta : '').toLowerCase();
+        }
+
+        function extractAnswerLetter(gabarito) {
+            if (typeof gabarito !== 'string') return null;
+            const trimmed = gabarito.trim();
+            const directMatch = trimmed.match(/^([A-F])$/i);
+            if (directMatch) return directMatch[1].toUpperCase();
+            const optionMatch = trimmed.match(/^Opção\s+([A-F])$/i);
+            if (optionMatch) return optionMatch[1].toUpperCase();
+            return null;
+        }
+
+        function isAnnulledAnswer(gabarito) {
+            return typeof gabarito === 'string' && /anulad/i.test(gabarito);
+        }
+
+        function buildValidationHtml(title, items) {
+            if (!items || items.length === 0) return '';
+            return `
+                <div style="margin-top: 15px; text-align: left; background: var(--card-bg); border: 1px solid var(--input-border); border-radius: 8px; padding: 15px;">
+                    <strong>${escapeHtml(title)}</strong>
+                    <ul style="margin: 10px 0 0 18px; padding: 0; line-height: 1.5;">
+                        ${items.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        function validateImportedQuestions(rawQuestions, currentDatabase) {
+            const sanitizedQuestions = [];
+            const errors = [];
+            const warnings = [];
+            const allowedTypes = ['objetiva', 'discursiva'];
+            const existingSignatures = new Set((currentDatabase || []).map(getQuestionSignature).filter(Boolean));
+            const batchSignatures = new Set();
+
+            rawQuestions.forEach((rawQuestion, index) => {
+                const prefix = `Questão ${index + 1}`;
+
+                if (!rawQuestion || typeof rawQuestion !== 'object' || Array.isArray(rawQuestion)) {
+                    errors.push(`${prefix}: o item informado não está no formato de objeto.`);
+                    return;
+                }
+
+                const q = JSON.parse(JSON.stringify(rawQuestion));
+
+                if (!Array.isArray(q.temas)) {
+                    if (Array.isArray(q.tema)) {
+                        q.temas = [...q.tema];
+                        warnings.push(`${prefix}: o campo <code>tema</code> foi convertido automaticamente para <code>temas</code>.`);
+                    } else if (typeof q.tema === 'string' && q.tema.trim()) {
+                        q.temas = [q.tema.trim()];
+                        warnings.push(`${prefix}: o campo <code>tema</code> foi convertido automaticamente para <code>temas</code>.`);
+                    }
+                }
+                delete q.tema;
+
+                q.pergunta = typeof q.pergunta === 'string' ? q.pergunta.trim() : '';
+                q.gabarito = typeof q.gabarito === 'string' ? q.gabarito.trim() : '';
+                q.tipo = typeof q.tipo === 'string' ? q.tipo.trim().toLowerCase() : '';
+
+                if (!q.pergunta) errors.push(`${prefix}: o campo <code>pergunta</code> é obrigatório e não pode ficar vazio.`);
+                if (!q.gabarito) errors.push(`${prefix}: o campo <code>gabarito</code> é obrigatório e não pode ficar vazio.`);
+                if (!allowedTypes.includes(q.tipo)) errors.push(`${prefix}: o campo <code>tipo</code> deve ser <code>"objetiva"</code> ou <code>"discursiva"</code>.`);
+
+                if (!Array.isArray(q.temas)) {
+                    errors.push(`${prefix}: o campo <code>temas</code> deve ser um array de textos.`);
+                } else {
+                    q.temas = q.temas.map(tag => typeof tag === 'string' ? tag.trim() : '').filter(Boolean);
+                    if (q.temas.length === 0) {
+                        errors.push(`${prefix}: o campo <code>temas</code> precisa conter ao menos uma tag válida.`);
+                    }
+                    const normalizedTags = q.temas.map(tag => tag.toLowerCase());
+                    if (new Set(normalizedTags).size !== normalizedTags.length) {
+                        warnings.push(`${prefix}: havia tags repetidas em <code>temas</code>; recomenda-se revisar a lista.`);
+                    }
+                    const malformedProofTags = q.temas.filter(tag => /^tep/i.test(tag) && !/^TEP\s\d{4}$/i.test(tag));
+                    if (malformedProofTags.length > 0) {
+                        warnings.push(`${prefix}: as tags ${malformedProofTags.map(tag => `<code>${escapeHtml(tag)}</code>`).join(', ')} começam com TEP, mas não seguem o padrão <code>TEP 20XX</code>.`);
+                    }
+                }
+
+                if (q.informacoesComplementares !== undefined && typeof q.informacoesComplementares !== 'string') {
+                    errors.push(`${prefix}: o campo <code>informacoesComplementares</code>, quando presente, deve ser um texto.`);
+                } else if (typeof q.informacoesComplementares === 'string') {
+                    q.informacoesComplementares = q.informacoesComplementares.trim();
+                }
+
+                if (q.tipo === 'objetiva') {
+                    if (!Array.isArray(q.opcoes)) {
+                        errors.push(`${prefix}: questões objetivas devem incluir o campo <code>opcoes</code> em formato de array.`);
+                    } else {
+                        q.opcoes = q.opcoes.map(opcao => typeof opcao === 'string' ? opcao.trim() : '');
+                        if (q.opcoes.some(opcao => !opcao)) errors.push(`${prefix}: todas as alternativas em <code>opcoes</code> devem ser textos não vazios.`);
+                        if (q.opcoes.length < 2 || q.opcoes.length > 6) errors.push(`${prefix}: o array <code>opcoes</code> deve conter entre 2 e 6 alternativas.`);
+                        const normalizedOptions = q.opcoes.map(opcao => opcao.toLowerCase());
+                        if (new Set(normalizedOptions).size !== normalizedOptions.length) errors.push(`${prefix}: o array <code>opcoes</code> contém alternativas repetidas.`);
+                    }
+
+                    const answerLetter = extractAnswerLetter(q.gabarito);
+                    if (answerLetter) {
+                        const answerIndex = answerLetter.charCodeAt(0) - 65;
+                        if (Array.isArray(q.opcoes) && answerIndex >= q.opcoes.length) {
+                            errors.push(`${prefix}: o gabarito <code>${escapeHtml(q.gabarito)}</code> aponta para uma alternativa inexistente.`);
+                        } else {
+                            q.gabarito = `Opção ${answerLetter}`;
+                        }
+                    } else if (isAnnulledAnswer(q.gabarito)) {
+                        warnings.push(`${prefix}: o gabarito foi marcado como questão anulada; a correção permanecerá manual.`);
+                    } else {
+                        errors.push(`${prefix}: o gabarito de uma questão objetiva deve estar no formato <code>"Opção A"</code> até <code>"Opção F"</code> ou apenas a letra correspondente.`);
+                    }
+                }
+
+                if (q.tipo === 'discursiva' && q.opcoes !== undefined) {
+                    warnings.push(`${prefix}: o campo <code>opcoes</code> foi ignorado por se tratar de uma questão discursiva.`);
+                    delete q.opcoes;
+                }
+
+                const signature = getQuestionSignature(q);
+                if (signature) {
+                    if (batchSignatures.has(signature)) warnings.push(`${prefix}: a pergunta parece duplicada dentro do próprio lote colado.`);
+                    else batchSignatures.add(signature);
+                    if (existingSignatures.has(signature)) warnings.push(`${prefix}: a pergunta parece já existir no banco atual. Revise para evitar duplicatas.`);
+                }
+
+                sanitizedQuestions.push(q);
+            });
+
+            return { sanitizedQuestions, errors, warnings };
+        }
+
+        function processNewQuestions() {
+            const inputTxt = document.getElementById('new-questions-input').value.trim();
+            const resultDiv = document.getElementById('add-q-result');
+            const msgP = document.getElementById('add-q-msg');
+            const btnDownload = document.getElementById('btn-download-db');
+            
+            if (!inputTxt) {
+                alert("Cole o código na caixa de texto primeiro.");
+                return;
+            }
+
+            try {
+                let novasQuestoes = new Function("return " + inputTxt)();
+
+                if (!Array.isArray(novasQuestoes)) {
+                    novasQuestoes = [novasQuestoes];
+                }
+
+                const bancoAtual = getGlobalBanco();
+                mergedDatabaseForExport = [...bancoAtual, ...novasQuestoes];
+
+                resultDiv.style.display = 'block';
+                msgP.innerHTML = `✅ Sucesso! O código foi lido.<br>
+                                  <span style="color: var(--secondary); font-weight: normal;">
+                                    Questões identificadas no código colado: <strong>${novasQuestoes.length}</strong><br>
+                                    Total de questões no novo arquivo: <strong>${mergedDatabaseForExport.length}</strong>
+                                  </span>`;
+                msgP.style.color = 'var(--success)';
+                btnDownload.style.display = 'block';
+                
+            } catch (err) {
+                resultDiv.style.display = 'block';
+                msgP.innerHTML = `❌ Erro de Sintaxe: Não foi possível interpretar o código.<br>
+                                  <span style="font-weight: normal; font-size: 0.9rem;">Detalhe técnico: ${err.message}</span>`;
+                msgP.style.color = 'var(--danger)';
+                btnDownload.style.display = 'none';
+            }
+        }
+
+        // --- FUNÇÃO DE DOWNLOAD SEM ERRO DE REATRIBUIÇÃO DE CONSTANTE ---
+        async function downloadUpdatedDB() {
+            const contentString = "const bancoDeQuestoes = " + JSON.stringify(mergedDatabaseForExport, null, 4) + ";\n";
+            
+            if (window.showSaveFilePicker) {
+                try {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: 'banco_questoes.js',
+                        types: [{
+                            description: 'Arquivo JavaScript',
+                            accept: {'text/javascript': ['.js']}
+                        }],
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(contentString);
+                    await writable.close();
+                    
+                    alert("✅ Arquivo salvo com sucesso na pasta escolhida! Lembre-se de substituir na pasta do seu sistema se você o salvou em outro lugar.");
+                    
+                    updateGlobalBanco(mergedDatabaseForExport);
+                    updateDBCounter();
+                    document.getElementById('new-questions-input').value = "";
+                    document.getElementById('add-q-result').style.display = 'none';
+                    
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        console.error("Erro na API de File System:", err);
+                        alert("Houve um erro ao tentar salvar o arquivo: " + err.message);
+                    }
+                }
+            } else {
+                // Método Tradicional (Fallback apenas para navegadores sem File System Access API)
+                const blob = new Blob([contentString], { type: "text/javascript;charset=utf-8" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                
+                a.href = url;
+                a.download = "banco_questoes.js";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                alert("Download iniciado pelo método padrão do navegador! Copie este arquivo baixado e substitua o antigo na pasta do seu projeto.");
+                
+                updateGlobalBanco(mergedDatabaseForExport);
+                updateDBCounter();
+                document.getElementById('new-questions-input').value = "";
+                document.getElementById('add-q-result').style.display = 'none';
+            }
+        }
+        // -------------------------------------------------------------------
+
+        // ---- GERENCIAMENTO DE APARÊNCIA ----
+        function loadAppearanceSettings() {
+            const savedTheme = localStorage.getItem('tep_theme') || 'light';
+            const savedPattern = localStorage.getItem('tep_pattern') || 'none';
+            
+            document.getElementById('theme-select').value = savedTheme;
+            document.getElementById('pattern-select').value = savedPattern;
+            applySettingsToDOM(savedTheme, savedPattern);
+        }
+
+        function applyAppearanceSettings() {
+            const theme = document.getElementById('theme-select').value;
+            const pattern = document.getElementById('pattern-select').value;
+            localStorage.setItem('tep_theme', theme);
+            localStorage.setItem('tep_pattern', pattern);
+            applySettingsToDOM(theme, pattern);
+        }
+
+        function applySettingsToDOM(theme, pattern) {
+            if (theme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+            } else {
+                document.body.removeAttribute('data-theme');
+            }
+            document.body.className = pattern !== 'none' ? `pattern-${pattern}` : '';
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // ---- SETUP DE TESTE ----
+        function initSetup() {
+            const banco = getGlobalBanco();
+            if(banco.length === 0) {
+                alert("Erro: O banco de questões não foi carregado corretamente ou está vazio.");
+                return;
+            }
+            
+            renderFullExamsList();
+            renderTagsList();
+            const standardRadio = document.querySelector(`input[name="test-type"][value="${lastStandardTestType}"]`) || document.querySelector('input[name="test-type"][value="discursiva"]');
+            standardRadio.checked = true;
+            updateQtyInputs();
+            resetTimerConfig();
+            showScreen('screen-setup');
+        }
+
+        function isCompleteExamTag(tag) {
+            return /^TEP\s+20\d{2}$/i.test(String(tag || '').trim());
+        }
+
+        function getQuestionTags(q) {
+            return q.temas || (q.tema ? [q.tema] : ["Sem Tema"]);
+        }
+
+        function createCheckboxItem(container, className, value, checked, onChangeHandler) {
+            const label = document.createElement('label');
+            label.className = 'tag-item';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = className;
+            checkbox.value = value;
+            checkbox.checked = checked;
+            checkbox.addEventListener('change', () => onChangeHandler(checkbox));
+
+            label.appendChild(checkbox);
+            label.appendChild(document.createTextNode(` ${value}`));
+            container.appendChild(label);
+        }
+
+        function renderFullExamsList() {
+            const container = document.getElementById('full-exams-container');
+            container.innerHTML = '';
+
+            const examsSet = new Set();
+            getGlobalBanco().forEach(q => {
+                getQuestionTags(q).forEach(tag => {
+                    if (isCompleteExamTag(tag)) examsSet.add(tag);
+                });
+            });
+
+            const examsArray = Array.from(examsSet).sort((a, b) => {
+                const yearA = parseInt(String(a).match(/20\d{2}/)?.[0] || '0', 10);
+                const yearB = parseInt(String(b).match(/20\d{2}/)?.[0] || '0', 10);
+                return yearB - yearA;
+            });
+
+            if (examsArray.length === 0) {
+                container.innerHTML = '<em>Nenhuma tag de prova completa foi encontrada no banco.</em>';
+                return;
+            }
+
+            examsArray.forEach(exam => {
+                createCheckboxItem(container, 'full-exam-checkbox', exam, false, handleFullExamChange);
+            });
+        }
+
+        function renderTagsList() {
+            const container = document.getElementById('tags-container');
+            container.innerHTML = '';
+            
+            const tagsSet = new Set();
+            getGlobalBanco().forEach(q => {
+                getQuestionTags(q).forEach(tag => {
+                    if (!isCompleteExamTag(tag)) tagsSet.add(tag);
+                });
+            });
+            
+            const tagsArray = Array.from(tagsSet).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+            
+            tagsArray.forEach(tag => {
+                createCheckboxItem(container, 'tag-checkbox', tag, true, handleThemeTagChange);
+            });
+        }
+
+        function getSelectedFullExams() {
+            return Array.from(document.querySelectorAll('.full-exam-checkbox:checked')).map(cb => cb.value);
+        }
+
+        function toggleAllFullExams(state) {
+            document.querySelectorAll('.full-exam-checkbox').forEach(cb => cb.checked = state);
+            handleFullExamChange();
+        }
+
+        function clearFullExamSelection() {
+            document.querySelectorAll('.full-exam-checkbox').forEach(cb => cb.checked = false);
+        }
+
+        function restoreStandardTestType() {
+            const radio = document.querySelector(`input[name="test-type"][value="${lastStandardTestType}"]`) || document.querySelector('input[name="test-type"][value="discursiva"]');
+            radio.checked = true;
+            updateQtyInputs();
+        }
+
+        function handleFullExamChange() {
+            const selectedExams = getSelectedFullExams();
+            if (selectedExams.length > 0) {
+                document.querySelectorAll('.tag-checkbox').forEach(cb => cb.checked = false);
+                document.querySelector('input[name="test-type"][value="prova-completa"]').checked = true;
+                updateQtyInputs();
+            } else if (document.querySelector('input[name="test-type"]:checked')?.value === 'prova-completa') {
+                restoreStandardTestType();
+            }
+        }
+
+        function handleThemeTagChange(checkbox) {
+            if (!checkbox.checked) return;
+
+            if (getSelectedFullExams().length > 0) {
+                clearFullExamSelection();
+            }
+
+            if (document.querySelector('input[name="test-type"]:checked')?.value === 'prova-completa') {
+                restoreStandardTestType();
+            }
+        }
+
+        function toggleAllTags(state) {
+            if (state) {
+                clearFullExamSelection();
+                if (document.querySelector('input[name="test-type"]:checked')?.value === 'prova-completa') {
+                    restoreStandardTestType();
+                }
+            }
+            document.querySelectorAll('.tag-checkbox').forEach(cb => cb.checked = state);
+        }
+
+        function handleTestTypeChange() {
+            const type = document.querySelector('input[name="test-type"]:checked').value;
+            if (type !== 'prova-completa') {
+                lastStandardTestType = type;
+                if (getSelectedFullExams().length > 0) clearFullExamSelection();
+            } else if (getSelectedFullExams().length > 0) {
+                document.querySelectorAll('.tag-checkbox').forEach(cb => cb.checked = false);
+            }
+            updateQtyInputs();
+        }
+
+        function updateQtyInputs() {
+            const type = document.querySelector('input[name="test-type"]:checked').value;
+            const qtyControls = document.getElementById('qty-controls');
+            const boxDisc = document.getElementById('box-qty-disc');
+            const boxObj = document.getElementById('box-qty-obj');
+
+            qtyControls.style.display = type === 'prova-completa' ? 'none' : 'flex';
+            boxDisc.style.display = (type === 'discursiva' || type === 'ambas') ? 'flex' : 'none';
+            boxObj.style.display = (type === 'objetiva' || type === 'ambas') ? 'flex' : 'none';
+        }
+
+        function updateTimerConfig() {
+            const mode = document.querySelector('input[name="timer-mode"]:checked').value;
+            document.getElementById('per-question-timer-input').style.display = mode === 'per-question' ? 'flex' : 'none';
+            document.getElementById('total-test-timer-input').style.display = mode === 'total-test' ? 'flex' : 'none';
+        }
+
+        function resetTimerConfig() {
+            document.querySelector('input[name="timer-mode"][value="none"]').checked = true;
+            updateTimerConfig();
+        }
+
+        function getTimerSettings() {
+            const mode = document.querySelector('input[name="timer-mode"]:checked').value;
+            if (mode === 'none') return { mode, minutes: 0 };
+
+            const inputId = mode === 'per-question' ? 'minutes-per-question' : 'total-test-minutes';
+            const minutes = parseInt(document.getElementById(inputId).value, 10);
+            if (!Number.isInteger(minutes) || minutes < 1) {
+                alert('Informe uma quantidade de minutos válida para o contador.');
+                return null;
+            }
+            return { mode, minutes };
+        }
+
+        function sortearQuestoesPonderadas(poolOriginal, numDesejado) {
+            const banco = getGlobalBanco();
+            const agora = Date.now();
+            const seteDiasMs = 7 * 24 * 60 * 60 * 1000;
+
+            const poolMapped = poolOriginal.map((q) => {
+                let originalIndex = banco.indexOf(q);
+                let ultimaVez = questaoUltimaVezVista[originalIndex] || 0;
+                let diferencaTempo = agora - ultimaVez;
+                let peso = (diferencaTempo < seteDiasMs) ? 0.15 : 1.0;
+                
+                return {
+                    questao: q,
+                    index: originalIndex,
+                    sortKey: Math.random() * peso
+                };
+            });
+
+            poolMapped.sort((a, b) => b.sortKey - a.sortKey);
+
+            return poolMapped.slice(0, numDesejado).map(item => ({
+                ...item.questao,
+                dbIndex: item.index,
+                userAnswer: '',
+                status: null,
+                isObjetiva: (item.questao.tipo === 'objetiva')
+            }));
+        }
+
+        function buildCompleteExamTest(selectedExams) {
+            const banco = getGlobalBanco();
+            const result = [];
+            const includedIndexes = new Set();
+
+            selectedExams.forEach(examTag => {
+                banco.forEach((q, index) => {
+                    if (includedIndexes.has(index)) return;
+                    if (!getQuestionTags(q).includes(examTag)) return;
+
+                    includedIndexes.add(index);
+                    result.push({
+                        ...q,
+                        dbIndex: index,
+                        userAnswer: '',
+                        status: null,
+                        isObjetiva: (q.tipo === 'objetiva')
+                    });
+                });
+            });
+
+            return result;
+        }
+
+        function startTest() {
+            const timerSettings = getTimerSettings();
+            if (!timerSettings) return;
+
+            timerMode = timerSettings.mode;
+            if (timerMode === 'total-test') {
+                timerSecondsRemaining = timerSettings.minutes * 60;
+            } else if (timerMode === 'per-question') {
+                minutesPerQuestion = timerSettings.minutes;
+            }
+
+            const testType = document.querySelector('input[name="test-type"]:checked').value;
+
+            if (testType === 'prova-completa') {
+                const selectedExams = getSelectedFullExams();
+                if (selectedExams.length === 0) {
+                    alert("Selecione pelo menos uma opção em 'Provas completas'.");
+                    return;
+                }
+
+                currentTest = buildCompleteExamTest(selectedExams);
+                if (currentTest.length === 0) {
+                    alert("Não foram encontradas questões associadas às provas selecionadas.");
+                    return;
+                }
+            } else {
+                const selectedTags = Array.from(document.querySelectorAll('.tag-checkbox:checked')).map(cb => cb.value);
+                if (selectedTags.length === 0) {
+                    alert("Selecione pelo menos um tema!");
+                    return;
+                }
+
+                let numDisc = 0, numObj = 0;
+
+                if (testType === 'discursiva' || testType === 'ambas') {
+                    numDisc = parseInt(document.getElementById('num-disc').value) || 0;
+                }
+                if (testType === 'objetiva' || testType === 'ambas') {
+                    numObj = parseInt(document.getElementById('num-obj').value) || 0;
+                }
+
+                if (numDisc === 0 && numObj === 0) {
+                    alert("A quantidade total de questões deve ser maior que zero.");
+                    return;
+                }
+
+                const filteredDB = getGlobalBanco().filter(q => {
+                    return getQuestionTags(q).some(t => selectedTags.includes(t));
+                });
+
+                const discPool = filteredDB.filter(q => q.tipo !== 'objetiva');
+                const objPool = filteredDB.filter(q => q.tipo === 'objetiva');
+
+                if (numDisc > 0 && discPool.length === 0) {
+                    alert(`Não há questões DISCURSIVAS suficientes para os temas selecionados (Encontradas: 0).`);
+                    return;
+                }
+                if (numObj > 0 && objPool.length === 0) {
+                    alert(`Não há questões OBJETIVAS suficientes para os temas selecionados (Encontradas: 0).`);
+                    return;
+                }
+
+                if (numDisc > discPool.length) numDisc = discPool.length;
+                if (numObj > objPool.length) numObj = objPool.length;
+
+                const selectedDisc = sortearQuestoesPonderadas(discPool, numDisc);
+                const selectedObj = sortearQuestoesPonderadas(objPool, numObj);
+
+                currentTest = [...selectedDisc, ...selectedObj];
+                currentTest.sort(() => Math.random() - 0.5);
+            }
+
+            currentIndex = 0;
+            renderSidebar();
+            loadQuestion(0);
+            updateCancelButtonState();
+
+            if (timerMode === 'total-test') {
+                startTotalTimer();
+            }
+
+            showScreen('screen-quiz');
+        }
+
+        // ---- EXECUÇÃO DO QUIZ ----
+        function renderSidebar() {
+            const sidebar = document.getElementById('sidebar-dots');
+            sidebar.innerHTML = '';
+            currentTest.forEach((q, index) => {
+                const dot = document.createElement('div');
+                dot.className = `q-dot ${q.status || ''}`;
+                dot.textContent = index + 1;
+                if(q.isObjetiva) dot.style.borderStyle = 'dashed'; 
+                dot.onclick = () => {
+                    if (timerMode === 'per-question' && index !== currentIndex) {
+                        alert("🔒 No modo 'Tempo por questão', você deve seguir a ordem sequencial e não pode navegar livremente pelo menu lateral.");
+                        return;
+                    }
+                    loadQuestion(index);
+                };
+                sidebar.appendChild(dot);
+            });
+        }
+
+        function updateSidebarHighlight() {
+            const dots = document.querySelectorAll('.q-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index === currentIndex) dot.classList.add('active');
+                
+                dot.classList.remove('correct', 'partial', 'wrong');
+                if (currentTest[index].status) dot.classList.add(currentTest[index].status);
+            });
+        }
+
+        function loadQuestion(index) {
+            if(currentTest[currentIndex] && !currentTest[currentIndex].isObjetiva) {
+                currentTest[currentIndex].userAnswer = document.getElementById('user-answer').value;
+            }
+
+            currentIndex = index;
+            const q = currentTest[currentIndex];
+
+            const badgeType = document.getElementById('question-type-badge');
+            badgeType.textContent = q.isObjetiva ? "Objetiva" : "Discursiva";
+            badgeType.style.backgroundColor = q.isObjetiva ? "var(--partial)" : "var(--primary)";
+            
+            document.getElementById('btn-corrigir').textContent = q.isObjetiva ? "Responder" : "Ver Gabarito e Corrigir";
+
+            tagsVisible = false;
+            document.getElementById('theme-container').style.display = 'none';
+            document.getElementById('theme-container').innerHTML = '';
+            document.getElementById('theme-icon').innerHTML = iconEyeClosed;
+            
+            document.getElementById('q-text').textContent = q.pergunta;
+            
+            const textArea = document.getElementById('user-answer');
+            const objContainer = document.getElementById('objetiva-container');
+
+            if (q.isObjetiva) {
+                textArea.style.display = 'none';
+                objContainer.style.display = 'flex';
+                objContainer.innerHTML = '';
+                
+                if (q.opcoes && Array.isArray(q.opcoes)) {
+                    q.opcoes.forEach((opcao, i) => {
+                        const lbl = document.createElement('label');
+                        lbl.className = 'obj-option-label';
+                        
+                        const disabledAttr = q.status ? 'disabled' : '';
+                        const letra = String.fromCharCode(97 + i); 
+                        
+                        lbl.innerHTML = `<input type="radio" name="obj-choice" value="${i}" ${q.userAnswer === i.toString() ? 'checked' : ''} ${disabledAttr}> <strong style="margin-right: 5px;">${letra})</strong> ${opcao}`;
+                        
+                        lbl.querySelector('input').addEventListener('change', (e) => {
+                            currentTest[currentIndex].userAnswer = e.target.value;
+                        });
+
+                        objContainer.appendChild(lbl);
+                    });
+                } else {
+                    objContainer.innerHTML = "<em>(Opções desta questão não cadastradas no banco)</em>";
+                }
+            } else {
+                textArea.style.display = 'block';
+                objContainer.style.display = 'none';
+                textArea.value = q.userAnswer || '';
+            }
+            
+            document.getElementById('gabarito-area').style.display = 'none';
+            document.getElementById('grade-controls').style.display = 'none';
+            document.getElementById('btn-corrigir').style.display = 'block';
+            document.getElementById('info-complementar-area').style.display = 'none';
+            document.getElementById('info-complementar-area').innerHTML = '';
+
+            if (q.status) {
+                showGabarito();
+            }
+
+            updateSidebarHighlight();
+            updateCancelButtonState();
+
+            if (timerMode === 'per-question') {
+                document.getElementById('btn-prev-question').style.display = 'none';
+
+                if (!q.status) {
+                    document.getElementById('btn-next-question').style.display = 'none';
+                    startQuestionTimer();
+                } else {
+                    clearInterval(timerInterval);
+                    document.getElementById('btn-next-question').style.display = 'inline-block';
+                }
+            } else {
+                document.getElementById('btn-prev-question').style.display = 'inline-block';
+                document.getElementById('btn-next-question').style.display = 'inline-block';
+            }
+        }
+
+        function toggleTheme() {
+            tagsVisible = !tagsVisible;
+            const container = document.getElementById('theme-container');
+            const icon = document.getElementById('theme-icon');
+            
+            if (tagsVisible) {
+                container.style.display = 'flex';
+                icon.innerHTML = iconEyeOpen;
+                
+                if (container.innerHTML === '') {
+                    const tags = currentTest[currentIndex].temas || [currentTest[currentIndex].tema || "Tema"];
+                    tags.forEach(tag => {
+                        const span = document.createElement('span');
+                        span.className = 'theme-badge';
+                        span.textContent = tag;
+                        container.appendChild(span);
+                    });
+                }
+            } else {
+                container.style.display = 'none';
+                icon.innerHTML = iconEyeClosed;
+            }
+        }
+
+        // Tenta identificar o índice (0=A, 1=B...) da alternativa correta a partir do texto do gabarito.
+        // Aceita tanto "Opção C" / "Gabarito oficial: Opção C" quanto o gabarito vindo apenas com a letra crua ("C").
+        // Retorna null quando não é possível identificar uma única alternativa correta (ex: questão anulada) -
+        // nesse caso o app cai no fluxo manual de autoavaliação, em vez de arriscar uma correção automática errada.
+        function obterIndiceRespostaCorreta(gabaritoText) {
+            if (!gabaritoText) return null;
+
+            let match = gabaritoText.match(/Op[cç][aã]o\s+([A-F])\b/i);
+            if (match) return match[1].toUpperCase().charCodeAt(0) - 65;
+
+            match = gabaritoText.trim().match(/^([A-F])\.?$/i);
+            if (match) return match[1].toUpperCase().charCodeAt(0) - 65;
+
+            return null;
+        }
+
+        function showGabarito() {
+            if (timerMode === 'per-question') {
+                clearInterval(timerInterval);
+                document.getElementById('btn-next-question').style.display = 'inline-block';
+            }
+
+            document.getElementById('btn-corrigir').style.display = 'none';
+            document.getElementById('gabarito-area').style.display = 'block';
+            
+            const q = currentTest[currentIndex];
+
+            if (q.isObjetiva) {
+                const indiceCorreto = obterIndiceRespostaCorreta(q.gabarito);
+
+                if (indiceCorreto !== null) {
+                    // Existe uma única alternativa correta identificável -> correção 100% automática
+                    document.getElementById('grade-controls').style.display = 'none';
+
+                    if (!q.status) {
+                        const isCorrect = (q.userAnswer !== undefined && q.userAnswer !== '' && parseInt(q.userAnswer) === indiceCorreto);
+                        q.status = isCorrect ? 'correct' : 'wrong';
+                        updateSidebarHighlight();
+                        updateCancelButtonState();
+                    }
+
+                    if (q.status === 'correct') {
+                        document.getElementById('gabarito-area').innerHTML = `<strong style="color: var(--success);">✅ Resposta Correta!</strong><br><br>${q.gabarito}`;
+                        document.getElementById('gabarito-area').style.borderLeftColor = 'var(--success)';
+                        document.getElementById('gabarito-area').style.backgroundColor = 'rgba(46, 204, 113, 0.1)';
+                    } else {
+                        document.getElementById('gabarito-area').innerHTML = `<strong style="color: var(--danger);">❌ Resposta Incorreta!</strong><br><br>${q.gabarito}`;
+                        document.getElementById('gabarito-area').style.borderLeftColor = 'var(--danger)';
+                        document.getElementById('gabarito-area').style.backgroundColor = 'rgba(231, 76, 60, 0.1)';
+                    }
+                } else {
+                    // Gabarito sem uma alternativa correta identificável (ex: questão anulada) -> autoavaliação manual
+                    document.getElementById('gabarito-area').innerHTML = q.gabarito;
+                    document.getElementById('gabarito-area').style.borderLeftColor = 'var(--secondary)';
+                    document.getElementById('gabarito-area').style.backgroundColor = 'rgba(52, 152, 219, 0.1)';
+                    document.getElementById('grade-controls').style.display = 'flex';
+                }
+
+                document.querySelectorAll('input[name="obj-choice"]').forEach(radio => {
+                    radio.disabled = true;
+                });
+
+            } else {
+                document.getElementById('gabarito-area').style.borderLeftColor = 'var(--success)';
+                document.getElementById('gabarito-area').style.backgroundColor = 'rgba(46, 204, 113, 0.1)';
+                document.getElementById('gabarito-area').innerHTML = q.gabarito;
+                document.getElementById('grade-controls').style.display = 'flex'; 
+            }
+
+            const infoArea = document.getElementById('info-complementar-area');
+            if (q.informacoesComplementares) {
+                infoArea.innerHTML = `<strong>📌 Informações Complementares:</strong><br><br>${q.informacoesComplementares}`;
+                infoArea.style.display = 'block';
+            } else {
+                infoArea.style.display = 'none';
+                infoArea.innerHTML = '';
+            }
+        }
+
+        function gradeAnswer(status) {
+            currentTest[currentIndex].status = status;
+            updateSidebarHighlight();
+            updateCancelButtonState();
+            
+            if (currentIndex < currentTest.length - 1) {
+                setTimeout(() => nextQuestion(), 300);
+            }
+        }
+
+        function updateCancelButtonState() {
+            const btnCancel = document.getElementById('btn-cancel-test');
+            const hasAnsweredAny = currentTest.some(q => q.status !== null);
+            
+            if (hasAnsweredAny) {
+                btnCancel.disabled = true;
+                btnCancel.title = "Não é possível cancelar após responder questões.";
+            } else {
+                btnCancel.disabled = false;
+                btnCancel.title = "Cancelar este teste";
+            }
+        }
+
+        function cancelTest() {
+            const hasAnsweredAny = currentTest.some(q => q.status !== null);
+            if (hasAnsweredAny) {
+                alert("O teste não pode ser cancelado pois já possui questões respondidas.");
+                return;
+            }
+            if (confirm("Tem certeza que deseja cancelar este teste? Ele não será salvo no histórico.")) {
+                clearInterval(timerInterval);
+                document.getElementById('timer-display').style.display = 'none';
+                showScreen('screen-home');
+            }
+        }
+
+        function nextQuestion() { if (currentIndex < currentTest.length - 1) loadQuestion(currentIndex + 1); }
+        function prevQuestion() { if (currentIndex > 0) loadQuestion(currentIndex - 1); }
+
+        function finishTest(force = false) {
+            if(!force && !confirm("Deseja realmente finalizar o teste e calcular sua nota?")) return;
+
+            clearInterval(timerInterval);
+            document.getElementById('timer-display').style.display = 'none';
+            
+            let correct = 0, partial = 0, wrong = 0, unanswered = 0;
+            const agora = Date.now();
+
+            currentTest.forEach(q => {
+                if (q.status === 'correct') { correct++; if (q.dbIndex !== undefined) questaoUltimaVezVista[q.dbIndex] = agora; }
+                else if (q.status === 'partial') { partial++; if (q.dbIndex !== undefined) questaoUltimaVezVista[q.dbIndex] = agora; }
+                else if (q.status === 'wrong') { wrong++; if (q.dbIndex !== undefined) questaoUltimaVezVista[q.dbIndex] = agora; }
+                else { unanswered++; }
+            });
+
+            const respondidas = correct + partial + wrong;
+            if (respondidas === 0) {
+                alert("Nenhuma questão foi respondida neste teste. Cancele o teste ou responda ao menos uma questão.");
+                return;
+            }
+
+            localStorage.setItem('tep_question_timestamps', JSON.stringify(questaoUltimaVezVista));
+
+            const totalScore = correct + (partial * 0.5);
+
+            historyData.push({
+                id: Date.now(),
+                date: new Date().toLocaleString('pt-BR'),
+                total: respondidas,
+                correct: correct,
+                partial: partial,
+                wrong: wrong,
+                unanswered: unanswered,
+                score: totalScore
+            });
+
+            localStorage.setItem('tep_quiz_history', JSON.stringify(historyData));
+            
+            renderResults();
+            showScreen('screen-results');
+        }
+
+        function renderResults() {
+            const list = document.getElementById('history-list');
+            list.innerHTML = '';
+            
+            let globTotal = 0, globPoints = 0;
+
+            [...historyData].reverse().forEach(test => {
+                const respondidas = test.total || 0;
+                const corretas = test.correct || 0;
+                const erradas = test.wrong || 0;
+                const parciais = test.partial || 0;
+                const emBranco = test.unanswered || 0;
+                const scoreQ = test.score !== undefined ? test.score : corretas;
+                
+                globTotal += respondidas;
+                globPoints += scoreQ;
+
+                const perc = respondidas > 0 ? Math.round((scoreQ / respondidas) * 100) : 0;
+
+                const li = document.createElement('li');
+                li.className = 'history-item';
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = test.id;
+                checkbox.setAttribute('aria-label', `Selecionar teste de ${test.date}`);
+                li.appendChild(checkbox);
+
+                const info = document.createElement('div');
+                info.innerHTML = `
+                    <strong>Teste de ${test.date}</strong><br>
+                    <small>${respondidas} Questões respondidas (${emBranco} em branco)</small>
+                `;
+                li.appendChild(info);
+
+                const performance = document.createElement('div');
+                performance.style.textAlign = 'right';
+                performance.innerHTML = `
+                    <strong style="color: var(--success);">${corretas} Corretas</strong> | 
+                    <strong style="color: var(--partial);">${parciais} Parciais</strong> | 
+                    <strong style="color: var(--danger);">${erradas} Erradas</strong><br>
+                    Pontuação: <strong>${scoreQ} / ${respondidas}</strong> (${perc}%)
+                `;
+                li.appendChild(performance);
+                list.appendChild(li);
+            });
+
+            document.getElementById('global-total').textContent = globTotal;
+            if (globTotal > 0) {
+                const acc = Math.round((globPoints / globTotal) * 100);
+                document.getElementById('global-acc').textContent = acc + '%';
+                document.getElementById('global-err').textContent = (100 - acc) + '%';
+            } else {
+                document.getElementById('global-acc').textContent = '0%';
+                document.getElementById('global-err').textContent = '0%';
+            }
+        }
+
+        function deleteSelectedHistoryTests() {
+            const selectedIds = Array.from(document.querySelectorAll('#history-list input[type="checkbox"]:checked'))
+                .map(checkbox => String(checkbox.value));
+
+            if (selectedIds.length === 0) {
+                alert("Selecione ao menos um teste do histórico para excluir.");
+                return;
+            }
+            if (!confirm(`Excluir ${selectedIds.length} teste(s) selecionado(s)? A exclusão só será permanente após gravar as alterações.`)) return;
+
+            historyData = historyData.filter(test => !selectedIds.includes(String(test.id)));
+            renderResults();
+        }
+
+        function saveHistoryChanges() {
+            localStorage.setItem('tep_quiz_history', JSON.stringify(historyData));
+            renderResults();
+            alert("Alterações no histórico gravadas com sucesso!");
+        }
+
+        async function exportarHistorico() {
+            const backupCompleto = { history: historyData, timestamps: questaoUltimaVezVista };
+            const jsonString = JSON.stringify(backupCompleto, null, 2);
+
+            if (window.showSaveFilePicker) {
+                try {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: 'historico_tep_backup.json',
+                        types: [{ description: 'Arquivo de Backup JSON', accept: {'application/json': ['.json']} }],
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(jsonString);
+                    await writable.close();
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        console.error("Erro na API de File System:", err);
+                        alert("Houve um erro ao tentar salvar o arquivo: " + err.message);
+                    }
+                }
+            } else {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(jsonString);
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", "historico_tep_backup.json");
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+            }
+        }
+
+        function importarHistorico(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (Array.isArray(importedData)) {
+                        historyData = importedData;
+                    } else if (importedData.history && importedData.timestamps) {
+                        historyData = importedData.history;
+                        questaoUltimaVezVista = importedData.timestamps;
+                        localStorage.setItem('tep_question_timestamps', JSON.stringify(questaoUltimaVezVista));
+                    }
+                    localStorage.setItem('tep_quiz_history', JSON.stringify(historyData));
+                    renderResults();
+                    alert("Histórico carregado com sucesso!");
+                } catch (err) {
+                    alert("Erro ao ler o arquivo de backup.");
+                }
+            };
+            reader.readAsText(file);
+        }
+    </script>
+</body>
+</html>
