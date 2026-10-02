@@ -1,5 +1,9 @@
 # TEP Quiz
 
+*Read this in other languages: [English](README-en.md)*
+
+---
+
 Aplicação web educacional para preparação e treinamento para o exame de Título de Especialista em Pediatria (TEP), com geração de testes personalizados, realização de provas completas por ano, correção de questões objetivas, autoavaliação de questões discursivas, histórico e estatísticas armazenados localmente no navegador.
 
 O projeto é executado inteiramente no navegador e não depende de backend ou banco de dados remoto. As questões são mantidas no arquivo `banco_questoes.js`, enquanto histórico, preferências de aparência e informações de revisão são armazenados localmente pelo navegador (`localStorage`).
