@@ -1,0 +1,259 @@
+# TEP Quiz
+
+*Leia isto em outros idiomas: [Português](README.md)*
+
+---
+
+Educational web application for preparation and training for the Brazilian Pediatrics Specialist Title examination (TEP), with custom test generation, complete exam sessions by year, automatic grading of objective questions, self-assessment of open-ended questions, and locally stored history and statistics.
+
+The project runs entirely in the browser and does not depend on a backend or remote database. Questions are stored in the `banco_questoes.js` file, while history, appearance preferences, and review information are stored locally by the browser through `localStorage`.
+
+## Main features
+
+- Test generation by **topics/tags**.
+- Selection of **open-ended**, **objective**, or both types of questions.
+- **Prova completa** mode, capable of loading all questions associated with one or more selected TEP exams.
+- Dedicated **Provas completas** area, separate from topic filters.
+- Automatic recognition of registered exams through tags following the `TEP 20XX` pattern.
+- Automatic grading of objective questions when the answer key identifies a valid option.
+- Self-assessment of open-ended questions as **correct**, **partially correct**, or **incorrect**.
+- Optional display of tags/topics while answering questions.
+- Support for supplementary information displayed after grading.
+- Weighted question selection, temporarily reducing the chance of repeating recently viewed questions.
+- **Countdown timer** with three modes:
+  - no timer;
+  - time per question, with sequential navigation;
+  - total exam time, with free navigation.
+- Test history and performance statistics.
+- Selection and deletion of tests from history, confirmed through **Gravar alterações**.
+- Export and import of history backups.
+- Light/dark theme and background patterns, including medical patterns with capsules and a medical bag.
+- **Sobre o projeto** page with authorship and development information.
+- Addition of new questions with structural validation before merging and generation of an updated `banco_questoes.js` file.
+
+## Complete exams
+
+Tags that identify an exam, such as:
+
+```text
+TEP 2025
+TEP 2024
+TEP 2023
+```
+
+remain stored inside each question's `temas` field, preserving compatibility with the existing bank. However, on the **Configurar Novo Teste** screen, they are handled separately from tags that describe medical content.
+
+When one or more options are selected under **Provas completas**:
+
+1. all selections under **Filtro de Temas (Tags)** are cleared;
+2. the question type is automatically changed to **Prova completa**;
+3. the question-quantity fields are no longer used;
+4. all questions associated with the selected exams are included in the test, regardless of whether they are objective or open-ended.
+
+If more than one exam is selected, the test combines the questions from all of them without duplicating the same question when it has more than one exam tag.
+
+Exam identification is dynamic: any tag following the `TEP 20XX` pattern automatically appears in the **Provas completas** area.
+
+## Difference between exam and topic
+
+The `temas` field in the bank can contain information of different kinds. For example:
+
+```javascript
+{
+    "temas": ["TEP 2025", "Pneumologia Pediátrica", "Asma"]
+}
+```
+
+In this object:
+
+- `TEP 2025` identifies the **exam/source of the question**;
+- `Pneumologia Pediátrica` and `Asma` identify the **medical content**.
+
+The interface separates these two purposes without requiring changes to the current bank format. Thus, exam tags are displayed under **Provas completas**, while the remaining tags stay under **Filtro de Temas (Tags)**.
+
+## Project structure
+
+```text
+TEP-Quiz/
+├── index.html
+├── banco_questoes.js
+├── README.md
+└── Arquivo/
+    ├── Código de Exemplo.txt
+    └── Orientações.txt
+```
+
+### `index.html`
+
+Contains the interface and the application's main logic: test configuration, quiz execution, timers, grading, statistics, history, appearance, and question-bank updating.
+
+### `banco_questoes.js`
+
+Contains the global `bancoDeQuestoes` array with the questions used by the system.
+
+## Question structure
+
+### Open-ended question
+
+```javascript
+{
+    "pergunta": "Texto da pergunta...",
+    "gabarito": "Texto do gabarito...",
+    "tipo": "discursiva",
+    "temas": ["TEP 2025", "Pneumologia Pediátrica"]
+}
+```
+
+### Objective question
+
+```javascript
+{
+    "pergunta": "Texto da pergunta...",
+    "opcoes": [
+        "Alternativa 1",
+        "Alternativa 2",
+        "Alternativa 3",
+        "Alternativa 4"
+    ],
+    "gabarito": "Opção B",
+    "tipo": "objetiva",
+    "temas": ["TEP 2025", "Pneumologia Pediátrica"],
+    "informacoesComplementares": "Conteúdo opcional exibido após a correção."
+}
+```
+
+The system remains compatible with older questions that use the singular `tema` field, although the preferred format is the `temas` array.
+
+## Weighted selection and review
+
+In tests generated by topic, the system assigns lower draw weight to questions that were viewed recently. Questions recorded as viewed within the last seven days receive a reduced weight, decreasing the probability of immediate repetition without removing them entirely from the selection pool.
+
+**Prova completa** mode does not use this weighted selection because its purpose is to include all questions belonging to the selected exams.
+
+## History and local data
+
+The application uses `localStorage` to store information in the browser itself, including:
+
+- test history;
+- a record of when each question was viewed;
+- light/dark theme;
+- background pattern.
+
+Because this data belongs to the browser and the origin where the application is running, clearing site data or changing browser/device may erase the local history. The backup feature can be used to preserve and transfer performance data.
+
+## How to run
+
+No dependencies need to be installed and no application server needs to be started.
+
+1. keep `index.html` and `banco_questoes.js` in the same folder;
+2. open `index.html` in a modern browser;
+3. for online availability, the static files can be published, for example, through GitHub Pages.
+
+Chromium-based browsers provide broader support for the optional file-saving features. When the specific API is unavailable, the application uses the browser's traditional download mechanism.
+
+## Updating the question bank
+
+The **Atualizar Banco de Questões** screen allows users to paste new JavaScript/JSON objects, merge them into the loaded bank, and generate a new `banco_questoes.js`.
+
+Before allowing generation of the new file, the system now performs **structural and semantic validation** of the pasted questions.
+
+### What is validated
+
+The checks include, among others:
+
+- whether each item is actually a question object;
+- whether `pergunta`, `gabarito`, and `tipo` exist and are not empty;
+- whether `tipo` is exactly `objetiva` or `discursiva`;
+- whether `temas` is an array containing at least one valid tag;
+- whether `informacoesComplementares`, when present, is text;
+- whether objective questions contain `opcoes` as an array;
+- whether the `opcoes` array contains between 2 and 6 non-empty, non-duplicated alternatives;
+- whether the objective-question `gabarito` points to a valid alternative (`Opção A` through `Opção F`, or only the corresponding letter);
+- whether there are signs of duplicate questions in the pasted batch or in the existing bank;
+- whether a tag beginning with `TEP` follows the `TEP 20XX` pattern.
+
+If there are **errors**, merging is blocked. If there are only **warnings**, the update can still proceed, but the system indicates the points that should be reviewed.
+
+## How to create code for inserting new questions
+
+The **Atualizar Banco de Questões** area accepts either a single object or an array of objects in JavaScript/JSON format.
+
+### Example of an open-ended question
+
+```javascript
+{
+    "pergunta": "Sobre a asma na criança, qual a conduta para exacerbação leve?",
+    "gabarito": "Uso de beta-2 agonista de curta duração (ex: Salbutamol).",
+    "tipo": "discursiva",
+    "temas": ["TEP 2025", "Pneumologia Pediátrica", "Asma"]
+}
+```
+
+### Example of an objective question
+
+```javascript
+{
+    "pergunta": "Qual o agente etiológico mais comum da bronquiolite viral aguda?",
+    "opcoes": [
+        "Rinovírus",
+        "Vírus Sincicial Respiratório (VSR)",
+        "Adenovírus",
+        "Metapneumovírus"
+    ],
+    "gabarito": "Opção B",
+    "tipo": "objetiva",
+    "temas": ["TEP 2025", "Pneumologia Pediátrica", "Bronquiolite"],
+    "informacoesComplementares": "<strong>Comentário:</strong> O VSR é a principal causa de bronquiolite em lactentes."
+}
+```
+
+### Example of a batch with multiple questions
+
+```javascript
+[
+    {
+        "pergunta": "Texto da questão 1...",
+        "gabarito": "Texto do gabarito 1...",
+        "tipo": "discursiva",
+        "temas": ["TEP 2024", "Pediatria Geral"]
+    },
+    {
+        "pergunta": "Texto da questão 2...",
+        "opcoes": ["Alternativa 1", "Alternativa 2", "Alternativa 3", "Alternativa 4"],
+        "gabarito": "Opção C",
+        "tipo": "objetiva",
+        "temas": ["TEP 2024", "Neonatologia"]
+    }
+]
+```
+
+### Practical rules for preparing the code
+
+1. Use double or single quotes consistently.
+2. Do not omit commas between fields.
+3. In objective questions, **do not** write the letters `A)`, `B)`, and so on inside the option text unless they are part of the option itself.
+4. Prefer `temas` over `tema`.
+5. To associate a question with a complete exam, include a tag following the `TEP 20XX` pattern inside `temas`.
+6. If an objective question has been annulled, the system will accept the item but warn that grading will remain manual.
+
+## Technologies
+
+- HTML5
+- CSS3
+- JavaScript (Vanilla JS)
+- Web Storage API (`localStorage`)
+- File System Access API when available, with fallback to traditional downloading
+
+The project does not require JavaScript frameworks, an application server, or an external database.
+
+## 👤 Authorship and development
+
+Educational web application independently developed by **Pablo Phillipe Cândido dos Santos**, intended for preparation and training for the Brazilian Pediatrics Specialist Title examination (TEP), with questions, complete exams, and custom tests executed directly in the browser.
+
+Generative artificial intelligence tools were used as auxiliary resources during development, while responsibility for the project's conception, implementation, integration, and verification remained with the author.
+
+Lattes CV: [http://lattes.cnpq.br/9500873674712528](http://lattes.cnpq.br/9500873674712528)
+
+## Note
+
+The project is intended for educational and training purposes. The organization and presentation of questions in the application do not imply any official relationship with institutions responsible for examinations, certifications, or professional titles.
